@@ -345,6 +345,8 @@ class Drive(object):
 
         if credentials is None:
             credentials = self._obtain_credentials()
+            if storage is not None:
+                storage.put(credentials)
 
         debug("Authenticating")
         import httplib2
