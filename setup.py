@@ -32,7 +32,7 @@ setup(
     ],
     install_requires = [
         'docopt >= 0.6.0',
-        'google-api-python-client >= 1.2',
+        'google-api-python-client >= 1.2, < 1.5.0',
         'httplib2 >= 0.8',
         'oauth2client >= 1.1',
         'python-dateutil >= 1.5',
