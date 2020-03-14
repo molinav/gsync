@@ -1,3 +1,9 @@
+    New in version 0.1.15:
+
+    - FIXED inconsistent versions of library dependencies
+
+    - FIXED issue with local storage of credentials
+
     New in version 0.1.14:
 
     - FEATURE #33: Option to change the default dir config files 
