@@ -34,7 +34,7 @@ setup(
         'docopt >= 0.6.0',
         'google-api-python-client >= 1.2, < 1.5.0',
         'httplib2 >= 0.8',
-        'oauth2client >= 1.1',
+        'oauth2client >= 1.1, < 4.0.0',
         'python-dateutil >= 1.5',
         'python-gflags >= 2.0',
         'python-magic >= 0.4.6',
