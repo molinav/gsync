@@ -403,13 +403,13 @@ class Drive(object):
         debug("Config dir = %s" % configdir)
 
         if not os.path.exists(configdir):
-            os.mkdir(configdir, 0700)
+            os.mkdir(configdir, 0o0700)
 
         if subdir is not None:
             configdir = os.path.join(configdir, subdir)
 
             if not os.path.exists(configdir):
-                os.mkdir(configdir, 0700)
+                os.mkdir(configdir, 0o0700)
 
         return configdir
 
