@@ -42,7 +42,7 @@ class Crawler(object):
         self._src = None
         self._dst = None
         self._sync = None
-        
+
         force_dest_file = GsyncOptions.force_dest_file
 
         self._drive = Drive()
@@ -104,7 +104,7 @@ class Crawler(object):
             GsyncOptions.force_dest_file = force_dest_file
 
         #super(Crawler, self).__init__(name = "Crawler: %s" % src)
-    
+
 
     def _dev_check(self, device_id, path):
         """
@@ -158,7 +158,7 @@ class Crawler(object):
                 absfile = os.path.join(dirpath, filename)
                 if not self._dev_check(device_id, absfile):
                     continue
-                    
+
                 debug("Synchronising file: %s" % repr(absfile))
                 self._sync(absfile)
 

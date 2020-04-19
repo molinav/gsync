@@ -66,7 +66,7 @@ class SyncRules(object):
         """
 
         return self.src_file.mimeType == self.dst_file.mimeType
-    
+
     @debug.function
     def skip_quickcheck(self):
         """Skip files based on files that are the same size and mtime"""
@@ -198,7 +198,7 @@ class SyncRules(object):
             if GsyncOptions.owner and dst_st.st_uid != src_st.st_uid:
                 self.action |= UPDATE_ATTRS
                 self.changes[6] = 'o'
-            
+
             if GsyncOptions.group and dst_st.st_gid != src_st.st_gid:
                 self.action |= UPDATE_ATTRS
                 self.changes[7] = 'g'

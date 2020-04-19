@@ -17,7 +17,7 @@ sys.stdout = (codecs.getwriter(sys.stdout.encoding))\
 class Channel(object):
     """Base channel class to define the interface"""
 
-    _priority = -1 
+    _priority = -1
 
     def enable(self):
         """Enables the channel."""
@@ -26,7 +26,7 @@ class Channel(object):
             self._priority = 0
         self._priority += 1
 
-    def disable(self): 
+    def disable(self):
         """Disables the channel."""
 
         self._priority = -1
@@ -160,7 +160,7 @@ class Progress(object):
                 self.bytes_written, self.percentage, unicode(self.rate()),
                 u"%d:%02d:%02d" % (hrs, mins, secs)
             ))
-        
+
     def __call__(self, status):
         self.time_taken = (datetime.now() - self._start).seconds
         self.bytes_written = long(status.resumable_progress)

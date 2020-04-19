@@ -44,7 +44,7 @@ class FilterObject(object):
         self.rules = []
         self.pathcache = {}
         self.merge_dir = ""
-    
+
     def get_modifier(self, path):
         """Returns a rule modifier that matches the given path"""
 
@@ -64,7 +64,7 @@ class FilterObject(object):
         with open(path, "r") as fd:
             for line in fd:
                 self.add_rule(modifier + " " + line)
-                
+
     def add_rules(self, rules, modifier = ""):
         """
         Adds rules to the filter object, specified with 'rules' and an
