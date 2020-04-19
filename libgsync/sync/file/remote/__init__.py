@@ -7,13 +7,13 @@
 
 import os
 import datetime
+from dateutil.tz import tzutc
+from apiclient.http import MediaIoBaseUpload, MediaUploadProgress
 from libgsync.output import debug, Progress
 from libgsync.sync import SyncType
 from libgsync.sync.file import SyncFile, SyncFileInfo
 from libgsync.options import GsyncOptions
-from apiclient.http import MediaIoBaseUpload, MediaUploadProgress
 from libgsync.drive import Drive
-from dateutil.tz import tzutc
 
 
 class SyncFileRemote(SyncFile):

@@ -9,31 +9,15 @@ import os
 import re
 import sys
 import datetime
-import retrying
-
-from dateutil.tz import tzutc
 from contextlib import contextmanager
-
-try:
-    input = raw_input  # pylint: disable=redefined-builtin,invalid-name
-except NameError:
-    pass
-
-# Setup default retryer.
-retryer = retrying.retry(  # pylint: disable-msg=C0103
-    wait='fixed_sleep', wait_fixed=60000,
-    stop='stop_after_attempt', stop_max_attempt_number=2
-)
+from dateutil.tz import tzutc
 
 try:
     import simplejson as json
 except ImportError:  # pragma: no cover
     import json
-
+import retrying
 import oauth2client.util
-oauth2client.util.positional_parameters_enforcement = \
-    oauth2client.util.POSITIONAL_IGNORE
-
 from apiclient.http import MediaUploadProgress
 from libgsync.output import debug
 from libgsync.drive.mimetypes import MimeTypes
@@ -42,6 +26,20 @@ from libgsync.drive.file import DriveFile
 if debug.enabled():  # pragma: no cover
     import logging
     logging.getLogger().setLevel(logging.DEBUG)
+
+try:
+    input = raw_input  # pylint: disable=redefined-builtin,invalid-name
+except NameError:
+    pass
+
+oauth2client.util.positional_parameters_enforcement = \
+    oauth2client.util.POSITIONAL_IGNORE
+
+# Setup default retryer.
+retryer = retrying.retry(  # pylint: disable-msg=C0103
+    wait='fixed_sleep', wait_fixed=60000,
+    stop='stop_after_attempt', stop_max_attempt_number=2
+)
 
 
 class NoTTYError(Exception):  # pragma: no cover

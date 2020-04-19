@@ -7,14 +7,14 @@
 
 import os
 import datetime
+from dateutil.tz import tzutc
+from apiclient.http import MediaFileUpload, MediaUploadProgress
 import libgsync.hashlib as hashlib
 from libgsync.output import debug, Progress
 from libgsync.drive.mimetypes import MimeTypes
 from libgsync.sync import SyncType
 from libgsync.sync.file import SyncFile, SyncFileInfo
 from libgsync.options import GsyncOptions
-from apiclient.http import MediaFileUpload, MediaUploadProgress
-from dateutil.tz import tzutc
 
 
 class SyncFileLocal(SyncFile):

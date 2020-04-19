@@ -10,6 +10,8 @@ types.  Obvious types are local (system) and remote (Google drive) files.
 import os
 import re
 import time
+from zlib import compress, decompress
+from base64 import b64encode, b64decode
 import dateutil.parser
 from dateutil.tz import tzutc
 
@@ -18,9 +20,6 @@ try:
     import posix as os_platform
 except ImportError:  # pragma: no cover
     import nt as os_platform  # pylint: disable-msg=F0401
-
-from zlib import compress, decompress
-from base64 import b64encode, b64decode
 
 try:
     import cPickle as pickle
