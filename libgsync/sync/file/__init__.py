@@ -113,22 +113,22 @@ class SyncFileInfoDatetime(object):
         return int(self.__value) - self.__native(d_obj)
 
     def __lt__(self, d_obj):
-        return (self.__value < self.__native(d_obj))
+        return self.__value < self.__native(d_obj)
 
     def __le__(self, d_obj):
-        return (self.__value <= self.__native(d_obj))
+        return self.__value <= self.__native(d_obj)
 
     def __eq__(self, d_obj):
-        return (self.__value == self.__native(d_obj))
+        return self.__value == self.__native(d_obj)
 
     def __ne__(self, d_obj):
-        return (self.__value != self.__native(d_obj))
+        return self.__value != self.__native(d_obj)
 
     def __gt__(self, d_obj):
-        return (self.__value > self.__native(d_obj))
+        return self.__value > self.__native(d_obj)
 
     def __ge__(self, d_obj):
-        return (self.__value >= self.__native(d_obj))
+        return self.__value >= self.__native(d_obj)
 
 
 class SyncFileInfo(object):
