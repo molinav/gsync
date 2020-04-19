@@ -81,7 +81,7 @@ def main():
             debug("Creating crawler for: %s" % repr(src))
             Crawler(src, dest).run()
 
-    except BaseException, ex:
+    except BaseException as ex:
         debug.exception(ex)
         critical(ex)
         return 1

@@ -139,7 +139,7 @@ class SyncFileLocal(SyncFile):
 
                 return md5_gen.hexdigest()
 
-        except Exception, ex: # pragma: no cover
+        except Exception as ex: # pragma: no cover
             debug.exception(ex)
 
         return None
@@ -171,7 +171,7 @@ class SyncFileLocal(SyncFile):
             if not GsyncOptions.dry_run:
                 fd = open(path, "w")
 
-        except Exception, ex: # pragma: no cover
+        except Exception as ex: # pragma: no cover
             debug("Creation failed: %s" % repr(ex))
 
         finally:
@@ -227,7 +227,7 @@ class SyncFileLocal(SyncFile):
             debug("Interrupted")
             raise
 
-        except Exception, ex: # pragma: no cover
+        except Exception as ex: # pragma: no cover
             debug("Write failed: %s" % repr(ex))
             raise
 

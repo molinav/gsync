@@ -464,7 +464,7 @@ class Drive(object):
                 with open(client_json, "w") as fd:
                     fd.write(json.dumps(client_obj))
 
-            except Exception, ex:
+            except Exception as ex:
                 debug("Exception: %s" % repr(ex))
                 raise
 
@@ -512,7 +512,7 @@ class Drive(object):
 
         try:
             names = self.listdir(top)
-        except Exception, ex:
+        except Exception as ex:
             debug.exception()
             debug("Exception: %s" % repr(ex))
 
@@ -893,7 +893,7 @@ class Drive(object):
                                 MediaUploadProgress(file_size, file_size)
                             )
 
-                except Exception, ex:
+                except Exception as ex:
                     debug("Exception: %s" % str(ex))
                     debug.exception()
 

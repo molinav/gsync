@@ -192,11 +192,11 @@ class Crawler(object):
         try:
             self._walk(srcpath, self._walk_callback, self._dev)
 
-        except KeyboardInterrupt, ex:
+        except KeyboardInterrupt as ex:
             print("\nInterrupted")
             raise
 
-        except Exception, ex:
+        except Exception as ex:
             debug.exception(ex)
             print("Error: %s" % repr(ex))
 

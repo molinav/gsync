@@ -241,7 +241,7 @@ class SyncFileInfo(object):
                     pickle.loads(decompress(b64decode(value)))
                 self._dict['description'] = value
                 return
-            except Exception, ex:
+            except Exception as ex:
                 debug("Base 64 decode failed: %s" % repr(ex))
 
             # That failed, try to decode using old hex encoding.
@@ -250,7 +250,7 @@ class SyncFileInfo(object):
                 self._dict['statInfo'] = pickle.loads(dvalue)
                 self._dict['description'] = value
                 return
-            except Exception, ex:
+            except Exception as ex:
                 debug("Hex decode failed: %s" % repr(ex))
 
             debug("Failed to decode string: %s" % repr(value))

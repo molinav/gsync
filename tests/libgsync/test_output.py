@@ -45,7 +45,7 @@ class TestCritical(TestCaseStdStringIO):
 
         try:
             raise Exception("CriticalException")
-        except Exception, ex:
+        except Exception as ex:
             channel(ex)
 
         import re
@@ -90,7 +90,7 @@ class TestDebug(TestCaseStdStringIO):
 
         try:
             raise Exception("Test exception")
-        except Exception, e:
+        except Exception as e:
             channel.exception(e)
 
         self.assertIsNotNone(pat.search(sys.stdout.getvalue()))
@@ -109,7 +109,7 @@ class TestDebug(TestCaseStdStringIO):
 
         try:
             raise Exception("Test exception")
-        except Exception, e:
+        except Exception as e:
             channel.exception(str(e))
 
         self.assertIsNotNone(pat.search(sys.stdout.getvalue()))
@@ -130,7 +130,7 @@ class TestDebug(TestCaseStdStringIO):
 
         try:
             raise Exception("Test exception")
-        except Exception, e:
+        except Exception as e:
             channel.exception(custom_string)
 
         self.assertIsNotNone(pat.search(sys.stdout.getvalue()))
@@ -149,7 +149,7 @@ class TestDebug(TestCaseStdStringIO):
 
         try:
             raise Exception("Test exception")
-        except Exception, e:
+        except Exception as e:
             channel.exception()
 
         self.assertIsNotNone(pat.search(sys.stdout.getvalue()))
