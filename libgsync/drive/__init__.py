@@ -271,7 +271,7 @@ class DrivePathCache(object):
     def clear(self, path):
         """Removes an item from the path cache"""
         path = Drive().normpath(path)
-        if self.__data.has_key(path):
+        if path in self.__data:
             del self.__data[path]
 
     def __repr__(self):

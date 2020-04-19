@@ -79,7 +79,7 @@ class GsyncListOptionsType(type):
         setattr(cls, "source_paths", paths)
         setattr(cls, "options", options)
 
-        for key, val in options.iteritems():
+        for key, val in options.items():
             setattr(cls, key, val)
 
     def __getattr__(cls, name):

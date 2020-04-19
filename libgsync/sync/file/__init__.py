@@ -160,7 +160,7 @@ class SyncFileInfo(object):
 
     def iteritems(self):
         """Interface method"""
-        return self._dict.iteritems()
+        return self._dict.items()
 
     def values(self):
         """Interface method"""
@@ -204,7 +204,7 @@ class SyncFileInfo(object):
 
     def __repr__(self):  # pragma: no cover
         return "SyncFileInfo(%s)" % ", ".join([
-            "%s = %s" % (repr(k), repr(v)) for k, v in self._dict.iteritems()
+            "%s = %s" % (repr(k), repr(v)) for k, v in self._dict.items()
         ])
 
     def set_stat_info(self, value):
