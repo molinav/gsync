@@ -7,6 +7,7 @@
 Crawler module which provides the interface for crawling local and remote
 file systems.
 """
+from __future__ import print_function
 
 import os
 import re

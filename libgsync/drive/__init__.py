@@ -4,6 +4,7 @@
 # Copyright (C) 2013-2014 Craig Phillips.  All rights reserved.
 
 """The GSync Drive module that provides an interface to the Google Drive"""
+from __future__ import print_function
 
 import os
 import re
