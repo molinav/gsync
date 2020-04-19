@@ -16,6 +16,11 @@ import retrying
 from dateutil.tz import tzutc
 from contextlib import contextmanager
 
+try:
+    input = raw_input  # pylint: disable=redefined-builtin,invalid-name
+except NameError:
+    pass
+
 # Setup default retryer.
 retryer = retrying.retry(  # pylint: disable-msg=C0103
     wait='fixed_sleep', wait_fixed=60000,
@@ -497,7 +502,7 @@ class Drive(object):
 
         code = ""
         while not code:
-            code = raw_input("Type in the received code: ")
+            code = input("Type in the received code: ")
 
         credentials = flow.step2_exchange(code)
         if credentials is None:
@@ -660,7 +665,7 @@ class Drive(object):
         debug("Got %d paths from pathlist(%s)" % (pathslen, repr(path)))
         debug("Got paths: %s" % repr(paths))
 
-        for i in xrange(1, pathslen):
+        for i in range(1, pathslen):
             searchpath = os.path.join(*paths[:i])
             searchname = paths[i]
             search = os.path.join(searchpath, searchname)

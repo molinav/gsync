@@ -226,7 +226,7 @@ class Critical(object):
         source_file = "unknown"
         lineno = 0
 
-        for i in xrange(len(tb) - 1, -1, -1):
+        for i in range(len(tb) - 1, -1, -1):
             if re.match(r'^.*/libgsync/.*$', tb[i][0]) is not None:
                 source_file = os.path.basename(tb[i][0])
                 if source_file == "__init__.py":
