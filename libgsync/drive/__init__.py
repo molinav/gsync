@@ -8,9 +8,7 @@
 import os
 import re
 import sys
-import time
 import datetime
-import shelve
 import retrying
 
 from dateutil.tz import tzutc
@@ -36,9 +34,8 @@ import oauth2client.util
 oauth2client.util.positional_parameters_enforcement = \
     oauth2client.util.POSITIONAL_IGNORE
 
-from oauth2client.client import OAuth2Credentials
 from apiclient.http import MediaUploadProgress
-from libgsync.output import verbose, debug
+from libgsync.output import debug
 from libgsync.drive.mimetypes import MimeTypes
 from libgsync.drive.file import DriveFile
 

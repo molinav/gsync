@@ -10,7 +10,6 @@ types.  Obvious types are local (system) and remote (Google drive) files.
 import os
 import re
 import time
-import datetime
 import dateutil.parser
 from dateutil.tz import tzutc
 
@@ -28,7 +27,7 @@ try:
 except ImportError:  # pragma: no cover
     import pickle
 
-from libgsync.output import verbose, debug, itemize
+from libgsync.output import debug
 from libgsync.drive.mimetypes import MimeTypes
 from libgsync.options import GsyncOptions
 

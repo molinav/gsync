@@ -8,7 +8,7 @@
 import os
 import datetime
 import libgsync.hashlib as hashlib
-from libgsync.output import verbose, debug, itemize, Progress
+from libgsync.output import debug, Progress
 from libgsync.drive.mimetypes import MimeTypes
 from libgsync.sync import SyncType
 from libgsync.sync.file import SyncFile, SyncFileInfo
