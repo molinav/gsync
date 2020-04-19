@@ -250,8 +250,8 @@ class Sync(object):
 
     src = None
     dst = None
-    total_bytes_sent = 0L
-    total_bytes_received = 0L
+    total_bytes_sent = 0
+    total_bytes_received = 0
     started = None
 
     def __init__(self, src, dst):

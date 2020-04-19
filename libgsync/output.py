@@ -139,8 +139,8 @@ class Progress(object):
         self._enable_output = enable_output
         self._start = datetime.now()
 
-        self.bytes_written = 0L
-        self.bytes_total = 0L
+        self.bytes_written = 0
+        self.bytes_total = 0
         self.percentage = 0
         self.time_taken = 0
 
@@ -192,11 +192,11 @@ class Progress(object):
         self.time_taken = (datetime.now() - self._start).seconds
         self.bytes_written = bytes_written
 
-        if self.bytes_total > 0L:
+        if self.bytes_total > 0:
             self.percentage = int(
                 (float(self.bytes_written) / float(self.bytes_total)) * 100.0
             )
-        elif self.bytes_written == 0L:
+        elif self.bytes_written == 0:
             self.percentage = 100
         else:
             self.percentage = 0
