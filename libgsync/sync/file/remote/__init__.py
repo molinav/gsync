@@ -38,7 +38,7 @@ class SyncFileRemote(SyncFile):
 
         return Drive().strippath(path)
 
-    def get_path(self, path = None):
+    def get_path(self, path=None):
         if path is None or path == "":
             return self._path
 
@@ -53,7 +53,7 @@ class SyncFileRemote(SyncFile):
         debug(" * got: %s" % repr(ret))
         return ret
 
-    def get_uploader(self, path = None):
+    def get_uploader(self, path=None):
         info = self.get_info(path)
         if info is None:
             raise Exception("Could not obtain file information: %s" % path)
@@ -69,7 +69,7 @@ class SyncFileRemote(SyncFile):
 
         return MediaIoBaseUpload(fd, info.mimeType, resumable=True)
 
-    def get_info(self, path = None):
+    def get_info(self, path=None):
         path = self.get_path(path)
 
         debug("Fetching remote file metadata: %s" % repr(path))
@@ -88,7 +88,7 @@ class SyncFileRemote(SyncFile):
 
         return info
 
-    def _create_dir(self, path, src = None):
+    def _create_dir(self, path, src=None):
         debug("Creating remote directory: %s" % repr(path))
 
         if not GsyncOptions.dry_run:
@@ -180,9 +180,9 @@ class SyncFileRemote(SyncFile):
             #attrs.mtime).replace(tzinfo=tzutc()).isoformat()
             attrs.mtime).replace(tzinfo=tzutc()).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
 
-        Drive().update(path, properties = {
+        Drive().update(path, properties={
             'description': info.description,
             'modifiedDate': mtime_utc,
-        }, options = {
+        }, options={
             'setModifiedDate': GsyncOptions.times
         })

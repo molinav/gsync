@@ -70,7 +70,7 @@ class DriveFileObject(object):
     """
     Defines an IO stream wrapper interface to a DriveFile.
     """
-    def __init__(self, path, mode = "r"):
+    def __init__(self, path, mode="r"):
         # Public
         self.closed = False
         self.description = ""
@@ -157,7 +157,7 @@ class DriveFileObject(object):
         """Provides file interface method, but does nothing"""
         pass
 
-    def seek(self, offset, whence = 0):
+    def seek(self, offset, whence=0):
         """Sets the current file IO offset"""
         self._required_open()
 
@@ -176,7 +176,7 @@ class DriveFileObject(object):
 
     # A pseudo function really, has no effect if no data is written after
     # calling this method.
-    def truncate(self, size = None): # pragma: no cover
+    def truncate(self, size=None): # pragma: no cover
         """
         Truncates the file by locally setting its size to zero, but has
         no effect on the server side copy until the file is written to.
@@ -219,14 +219,14 @@ class DriveFileObject(object):
             }
 
             res, data = http.request(url, headers=headers)
-            retry = res.status in [ 301, 302, 303, 307, 308 ] \
+            retry = res.status in [301, 302, 303, 307, 308] \
                 and 'location' in res
 
             if retry: # pragma: no cover
                 url = res['location']
                 res, data = http.request(url, headers=headers)
 
-            if res.status in [ 200, 206 ]:
+            if res.status in [200, 206]:
                 self._offset += length
                 return data
 
@@ -240,7 +240,7 @@ class DriveFileObject(object):
         """
         data = data # static_cast<void>(data) for pylint
         self._required_open()
-        self._required_modes([ "w", "a" ])
+        self._required_modes(["w", "a"])
 
 
 class DrivePathCache(object):
@@ -363,7 +363,7 @@ class Drive(object):
         #if debug.enabled(): httplib2.debuglevel = 4
 
         http = credentials.authorize(
-            httplib2.Http(cache = self._get_config_dir("http_cache"))
+            httplib2.Http(cache=self._get_config_dir("http_cache"))
         )
 
         debug("Loading Google Drive service from config")
@@ -380,7 +380,7 @@ class Drive(object):
         res, content = http.request(url)
 
         apistr = None
-        if res.status in [ 200, 202 ]:
+        if res.status in [200, 202]:
             # API expires every minute.
             apistr = content
 
@@ -389,7 +389,7 @@ class Drive(object):
 
         debug("Building Google Drive service from document")
         self._service = build_from_document(
-            apistr, http = http, base = DISCOVERY_URI
+            apistr, http=http, base=DISCOVERY_URI
         )
 
         yield self._service
@@ -404,7 +404,7 @@ class Drive(object):
 
         debug("My pid = %d" % os.getpid())
 
-    def _get_config_dir(self, subdir = None):
+    def _get_config_dir(self, subdir=None):
         """Returns the path to the gsync config directory"""
         configdir = os.getenv('GSYNC_CONFIG_DIR',
             os.path.join(os.getenv('HOME', '~'), '.gsync')
@@ -487,8 +487,8 @@ class Drive(object):
         from oauth2client.client import flow_from_clientsecrets
         flow = flow_from_clientsecrets(
             client_json,
-            scope = 'https://www.googleapis.com/auth/drive',
-            redirect_uri = 'urn:ietf:wg:oauth:2.0:oob'
+            scope='https://www.googleapis.com/auth/drive',
+            redirect_uri='urn:ietf:wg:oauth:2.0:oob'
         )
 
         auth_uri = flow.step1_get_authorize_url()
@@ -636,15 +636,15 @@ class Drive(object):
 
         if ent is not None:
             debug("Found path in path cache: %s" % repr(path))
-            return DriveFile(path = Drive.unicode(path), **ent)
+            return DriveFile(path=Drive.unicode(path), **ent)
 
         # First list root and walk to the requested file from there.
         ent = DriveFile(
-            path = Drive.unicode(self.normpath('/')),
-            id = 'root',
-            title = '/',
-            mimeType = MimeTypes.FOLDER,
-            modifiedDate = "Thu, 01 Jan 1970 00:00:00 +0000"
+            path=Drive.unicode(self.normpath('/')),
+            id='root',
+            title='/',
+            mimeType=MimeTypes.FOLDER,
+            modifiedDate="Thu, 01 Jan 1970 00:00:00 +0000"
         )
 
         # User has requested root directory
@@ -695,7 +695,7 @@ class Drive(object):
 
             if search == path:
                 debug("Found %s" % repr(search))
-                drive_file = DriveFile(path = Drive.unicode(path), **ent)
+                drive_file = DriveFile(path=Drive.unicode(path), **ent)
 
                 debug(" * returning %s" % repr(drive_file), 3)
                 return drive_file
@@ -722,7 +722,7 @@ class Drive(object):
         debug("dirname = %s, basename = %s" % (
             repr(dirname), repr(basename)
         ))
-        if dirname in [ "/", "drive:" ]:
+        if dirname in ["/", "drive:"]:
             parent_id = "root"
         else:
             parent = self.stat(dirname)
@@ -743,16 +743,16 @@ class Drive(object):
 
         with self.service() as service:
             info = service.files().insert(
-                body = {
+                body={
                     'title': basename,
                     'mimeType': MimeTypes.FOLDER,
-                    'parents': [{ 'id': parent_id }]
+                    'parents': [{'id': parent_id}]
                 }
             ).execute()
 
             if info:
                 self._pcache.put(path, info)
-                ent = DriveFile(path = Drive.unicode(normpath), **info)
+                ent = DriveFile(path=Drive.unicode(normpath), **info)
                 return ent
 
         raise IOError("Failed to create directory: %s" % path)
@@ -773,7 +773,7 @@ class Drive(object):
 
         return names
 
-    def open(self, path, mode = "r"):
+    def open(self, path, mode="r"):
         """
         Returns a DriveFileObject as a python file type object wrapper to
         the remote file specified by the path.  See DriveFileObject.
@@ -839,8 +839,8 @@ class Drive(object):
         debug(" * trying...")
         with self.service() as service:
             ent = service.files().insert(
-                body = body,
-                media_body = ""
+                body=body,
+                media_body=""
             ).execute()
 
             # Clear the cache and update the path cache

@@ -10,7 +10,7 @@ its namespace.
 
 from __future__ import absolute_import
 
-__all__ = ( "new" )
+__all__ = ("new",)
 
 import hashlib
 

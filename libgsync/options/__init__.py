@@ -53,7 +53,7 @@ static singlton values.
 So this actually means that GsyncOptions is actually a static proxy class...
 """
 
-__all__ = [ "GsyncOptions" ]
+__all__ = ["GsyncOptions"]
 
 
 class Options(object):
@@ -70,8 +70,8 @@ class GsyncListOptionsType(type):
 
         options = docopt(
             doc.__doc__ % __version__,
-            version = __version__,
-            options_first = True
+            version=__version__,
+            options_first=True
         )
 
         paths = options.pop('<path>', None)
@@ -88,7 +88,7 @@ class GsyncListOptionsType(type):
             Options._Options__initialised = True # pylint: disable-msg=W0212
 
         if not hasattr(Options, name):
-            type.__setattr__(Options, name, [ None ])
+            type.__setattr__(Options, name, [None])
 
         return getattr(Options, name)
 
@@ -103,9 +103,9 @@ class GsyncListOptionsType(type):
             if value:
                 listvalue = [] + value
             else:
-                listvalue = [ None ]
+                listvalue = [None]
         else:
-            listvalue = [ value ]
+            listvalue = [value]
 
         type.__setattr__(Options, name, listvalue)
 

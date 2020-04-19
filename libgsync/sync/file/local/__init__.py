@@ -23,7 +23,7 @@ class SyncFileLocal(SyncFile):
     def sync_type(self):
         return SyncType.LOCAL
 
-    def get_uploader(self, path = None):
+    def get_uploader(self, path=None):
         info = self.get_info(path)
         if info is None: # pragma: no cover
             raise Exception("Could not obtain file information: %s" % path)
@@ -34,10 +34,10 @@ class SyncFileLocal(SyncFile):
         open(path, "r").close()
 
         return MediaFileUpload(
-            path, mimetype = info.mimeType, resumable = True
+            path, mimetype=info.mimeType, resumable=True
         )
 
-    def get_info(self, path = None):
+    def get_info(self, path=None):
         path = self.get_path(path)
 
         debug("Fetching local file metadata: %s" % repr(path))

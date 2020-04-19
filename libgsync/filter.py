@@ -21,8 +21,8 @@ RULEMOD_PAIRS = [
     ("dir-merge", ":"),
     ("merge", "."),
 ]
-RULES = r"(%s)" % "|".join([ r for r, m in RULEMOD_PAIRS ])
-MODIFIERS = r"([%s])" % "".join([ m for r, m in RULEMOD_PAIRS ])
+RULES = r"(%s)" % "|".join([r for r, m in RULEMOD_PAIRS])
+MODIFIERS = r"([%s])" % "".join([m for r, m in RULEMOD_PAIRS])
 EXPR_RULE_MOD_PATTERN = r"\s*%s,\s*%s\s*(\S+)" % (RULES, MODIFIERS)
 EXPR_RULE_PATTERN = r"\s*%s\s*(\S+)" % (RULES)
 EXPR_MOD_PATTERN = r"\s*,?\s*%s\s*(\S+)" % (MODIFIERS)
@@ -66,7 +66,7 @@ class FilterObject(object):
             for line in fd:
                 self.add_rule(modifier + " " + line)
 
-    def add_rules(self, rules, modifier = ""):
+    def add_rules(self, rules, modifier=""):
         """
         Adds rules to the filter object, specified with 'rules' and an
         optional modifier, where rules do not contain modifiers.

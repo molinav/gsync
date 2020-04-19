@@ -242,7 +242,7 @@ class SyncRules(object):
             if not self._apply_skip_update():
                 self.action |= UPDATE_DATA
 
-        if self.action & ( CREATE | UPDATE_DATA ):
+        if self.action & (CREATE | UPDATE_DATA):
             self.changes[0] = self.sync_type
 
         return self.action, self.changes

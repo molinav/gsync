@@ -58,7 +58,7 @@ class Debug(Channel):
     def write(self, msg, priority=1):
         if self._priority >= priority:
             stack = inspect.stack()
-            indent = "".join([ " " for _ in range(len(stack) - 2) ])
+            indent = "".join([" " for _ in range(len(stack) - 2)])
 
             self._write_frame(stack[2], msg, indent)
 
@@ -88,7 +88,7 @@ class Debug(Channel):
 
         super(Debug, self).write("DEBUG: END STACK TRACE")
 
-    def exception(self, ex = "Exception"):
+    def exception(self, ex="Exception"):
         """Writes a formatted exception to the channel buffer."""
 
         if isinstance(ex, Exception):
@@ -139,7 +139,7 @@ class Progress(object):
     Defines a non-singleton channel for writing file transfer progress
     output to stdout and stderr.
     """
-    def __init__(self, enable_output = True, callback = None):
+    def __init__(self, enable_output=True, callback=None):
         self._callback = callback
         self._enable_output = enable_output
         self._start = datetime.now()
@@ -184,7 +184,7 @@ class Progress(object):
         """
         rate = float(self.bytes_written) / max(0.1, float(self.time_taken))
 
-        for modifier in [ 'B', 'KB', 'MB', 'GB', 'TB' ]:
+        for modifier in ['B', 'KB', 'MB', 'GB', 'TB']:
             if rate < 1024.0:
                 return "%3.2f%s/s" % (rate, modifier)
             rate /= 1024.0
@@ -246,7 +246,7 @@ debug = Debug() # pylint: disable-msg=C0103
 itemize = Itemize() # pylint: disable-msg=C0103
 critical = Critical() # pylint: disable-msg=C0103
 
-__all__ = [ "verbose", "debug", "itemize", "critical" ]
+__all__ = ["verbose", "debug", "itemize", "critical"]
 
 if os.environ.get('GSYNC_DEBUG', '0') == '1': # pragma: no cover
     debug.enable()

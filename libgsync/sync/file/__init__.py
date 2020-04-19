@@ -56,7 +56,7 @@ class SyncFileInfoDatetime(object):
     __epoch = dateutil.parser.parse(
         "Thu, 01 Jan 1970 00:00:00 +0000",
         ignoretz=True
-    ).replace(tzinfo = tzutc())
+    ).replace(tzinfo=tzutc())
     __value = None
 
     def get_value(self):
@@ -72,7 +72,7 @@ class SyncFileInfoDatetime(object):
 
     def __init__(self, datestring):
         d_obj = dateutil.parser.parse(datestring, ignoretz=True)
-        self.__value = d_obj.replace(tzinfo = tzutc())
+        self.__value = d_obj.replace(tzinfo=tzutc())
 
     def __getattr__(self, name):
         try:
@@ -184,7 +184,7 @@ class SyncFileInfo(object):
             object.__setattr__(self, name, value)
             return
 
-        if name in [ "description", "statInfo" ]:
+        if name in ["description", "statInfo"]:
             self.set_stat_info(value)
             return
 
@@ -298,7 +298,7 @@ class SyncFile(object):
     def __add__(self, path):
         return self.get_path(path)
 
-    def get_path(self, path = None):
+    def get_path(self, path=None):
         """Returns the path of the SyncFile instance, or the path joined
         with the path provided.
 
@@ -310,7 +310,7 @@ class SyncFile(object):
         debug("Joining: %s with %s" % (repr(self._path), repr(path)))
         return os.path.join(self._path, path)
 
-    def get_uploader(self, path = None): # pragma: no cover
+    def get_uploader(self, path=None): # pragma: no cover
         """Returns the uploader (e.g. MediaUpload) for synchronisation.
 
         @param {str} path    Path to the file beneath this object
@@ -319,7 +319,7 @@ class SyncFile(object):
 
         raise NotImplementedError
 
-    def get_info(self, path = None): # pragma: no cover
+    def get_info(self, path=None): # pragma: no cover
         """Returns information about the file
 
         @param {str} path    Path to the file beneath this object
@@ -328,7 +328,7 @@ class SyncFile(object):
 
         raise NotImplementedError
 
-    def _create_dir(self, path, src = None): # pragma: no cover
+    def _create_dir(self, path, src=None): # pragma: no cover
         """Pure virtual function"""
         raise NotImplementedError
 
@@ -352,15 +352,15 @@ class SyncFile(object):
         """Pure virtual function"""
         raise NotImplementedError
 
-    def __create_file(self, path, src = None):
+    def __create_file(self, path, src=None):
         self._create_file(path, src)
         self._update_data(path, src)
         self.__update_attrs(path, src)
 
-    def __create_symlink(self, path, src = None):
+    def __create_symlink(self, path, src=None):
         self._create_symlink(path, src)
 
-    def __create_dir(self, path, src = None):
+    def __create_dir(self, path, src=None):
         self._create_dir(path, src)
         self.__update_attrs(path, src)
 
@@ -440,7 +440,7 @@ class SyncFile(object):
 
         return (src_path, src_info, src_obj)
 
-    def create(self, path, src = None):
+    def create(self, path, src=None):
         """Creates a file at the designated path"""
 
         _, src_info, src_obj = self._normalise_source(src)
