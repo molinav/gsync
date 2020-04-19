@@ -143,7 +143,7 @@ class SyncFileRemote(SyncFile):
             )
 
             if info is not None:
-                bytes_written = long(info.get('fileSize', '0'))
+                bytes_written = int(info.get('fileSize', '0'))
                 debug("Final file size: %d" % bytes_written)
             else:
                 debug("Update failed")

@@ -168,7 +168,7 @@ class Progress(object):
 
     def __call__(self, status):
         self.time_taken = (datetime.now() - self._start).seconds
-        self.bytes_written = long(status.resumable_progress)
+        self.bytes_written = int(status.resumable_progress)
         self.percentage = int(status.progress() * 100.0)
         self.bytes_total = status.total_size
 

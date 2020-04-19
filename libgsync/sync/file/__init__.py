@@ -100,7 +100,7 @@ class SyncFileInfoDatetime(object):
         return int(self.__secs())
 
     def __long__(self):
-        return long(self.__secs())
+        return int(self.__secs())
 
     def __float__(self):
         return float(self.__secs())
