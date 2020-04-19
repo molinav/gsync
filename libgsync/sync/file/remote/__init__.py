@@ -5,7 +5,9 @@
 
 """Remote file synchronisation"""
 
-import os, re, datetime
+import os
+import re
+import datetime
 from libgsync.output import verbose, debug, itemize, Progress
 from libgsync.sync import SyncType
 from libgsync.sync.file import SyncFile, SyncFileInfo

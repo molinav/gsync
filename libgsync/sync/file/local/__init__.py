@@ -5,7 +5,8 @@
 
 """Local version of the SyncFile type for handling local file access"""
 
-import os, datetime
+import os
+import datetime
 import libgsync.hashlib as hashlib
 from libgsync.output import verbose, debug, itemize, Progress
 from libgsync.drive.mimetypes import MimeTypes

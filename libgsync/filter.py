@@ -7,7 +7,8 @@
 Defines the filter feature of gsync, as specified by --filter like options.
 """
 
-import re, fnmatch
+import re
+import fnmatch
 from libgsync.output import debug
 
 RULEMOD_PAIRS = [

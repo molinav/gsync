@@ -8,7 +8,9 @@ Crawler module which provides the interface for crawling local and remote
 file systems.
 """
 
-import os, re, sys
+import os
+import re
+import sys
 from libgsync.sync import Sync
 from libgsync.output import verbose, debug
 from libgsync.options import GsyncOptions

@@ -4,7 +4,9 @@
 
 """GSync - RSync for Google Drive"""
 
-import sys, os, logging
+import os
+import sys
+import logging
 
 try:
     import coverage

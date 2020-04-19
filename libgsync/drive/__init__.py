@@ -5,7 +5,13 @@
 
 """The GSync Drive module that provides an interface to the Google Drive"""
 
-import os, sys, re, datetime, shelve, time, retrying
+import os
+import re
+import sys
+import time
+import datetime
+import shelve
+import retrying
 
 from dateutil.tz import tzutc
 from contextlib import contextmanager

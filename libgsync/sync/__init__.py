@@ -5,7 +5,10 @@
 
 """Provides an Adapter for local and remote sync file types"""
 
-import os, datetime, time, re
+import os
+import re
+import time
+import datetime
 from libgsync.enum import Enum
 from libgsync.output import verbose, debug, itemize
 from libgsync.drive.mimetypes import MimeTypes

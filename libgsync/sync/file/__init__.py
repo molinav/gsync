@@ -7,7 +7,11 @@
 types.  Obvious types are local (system) and remote (Google drive) files.
 """
 
-import os, datetime, time, dateutil.parser, re
+import os
+import re
+import time
+import datetime
+import dateutil.parser
 from dateutil.tz import tzutc
 
 # Provide support for Windows environments.

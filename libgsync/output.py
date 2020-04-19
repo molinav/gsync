@@ -6,7 +6,11 @@
 
 """Defines output channels for gsync"""
 
-import os, sys, inspect, re, codecs
+import os
+import re
+import sys
+import inspect
+import codecs
 from datetime import datetime
 
 # Make stdout unbuffered.
