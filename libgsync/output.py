@@ -12,6 +12,8 @@ import sys
 import inspect
 import codecs
 from datetime import datetime
+import traceback
+from libgsync import __version__
 
 # Make stdout unbuffered.
 sys.stdout = (codecs.getwriter(sys.stdout.encoding))\
@@ -96,7 +98,6 @@ class Debug(Channel):
                 repr(ex), str(ex)
             ), -1)
 
-        import traceback
         super(Debug, self).write("DEBUG: %s: %s" % (
             repr(ex), "".join(traceback.format_tb(sys.exc_info()[2]))
         ), -1)
@@ -218,9 +219,6 @@ class Critical(object):
     """
     def __call__(self, ex):
         sys.stderr.write(u"gsync: %s\n" % unicode(ex))
-
-        from libgsync import __version__
-        import traceback
 
         tb = traceback.extract_tb((sys.exc_info())[-1])
         source_file = "unknown"

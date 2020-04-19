@@ -10,6 +10,7 @@ import os
 import re
 import sys
 import datetime
+import inspect
 from contextlib import contextmanager
 from dateutil.tz import tzutc
 
@@ -17,8 +18,14 @@ try:
     import simplejson as json
 except ImportError:  # pragma: no cover
     import json
+import httplib2
 import retrying
 import oauth2client.util
+from oauth2client.client import flow_from_clientsecrets
+from oauth2client.file import Storage
+from apiclient.discovery import build_from_document
+from apiclient.discovery import DISCOVERY_URI
+import uritemplate
 from apiclient.http import MediaUploadProgress
 from libgsync.output import debug
 from libgsync.drive.mimetypes import MimeTypes
@@ -123,7 +130,6 @@ class DriveFileObject(object):
         of required modes.
         """
         if self._mode not in modes:
-            import inspect
             curframe = inspect.currentframe()
             calframe = inspect.getouterframes(curframe, 2)
             name = calframe[1][3]
@@ -359,7 +365,6 @@ class Drive(object):
                 storage.put(credentials)
 
         debug("Authenticating")
-        import httplib2
 
         #if debug.enabled(): httplib2.debuglevel = 4
 
@@ -369,11 +374,8 @@ class Drive(object):
 
         debug("Loading Google Drive service from config")
 
-        from apiclient.discovery import build_from_document, DISCOVERY_URI
-
         debug("Downloading API service")
 
-        import uritemplate
         url = uritemplate.expand(DISCOVERY_URI, {
             'api': 'drive',
             'apiVersion': 'v2'
@@ -444,7 +446,6 @@ class Drive(object):
         if not os.path.exists(storagefile):
             open(storagefile, 'a+b').close()
 
-        from oauth2client.file import Storage
         storage = Storage(storagefile)
         self._credential_storage = storage
 
@@ -485,7 +486,6 @@ class Drive(object):
         # one using the app client ID and secret.  Here, we need to obtain an
         # auth URL that the user will need to visit to obtain the user code
         # needed to allow us to obtain a refresh token.
-        from oauth2client.client import flow_from_clientsecrets
         flow = flow_from_clientsecrets(
             client_json,
             scope='https://www.googleapis.com/auth/drive',

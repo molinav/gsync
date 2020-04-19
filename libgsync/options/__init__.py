@@ -55,6 +55,11 @@ So this actually means that GsyncOptions is actually a static proxy class...
 
 __all__ = ["GsyncOptions"]
 
+import re
+from docopt import docopt
+from libgsync.options import doc
+from libgsync import __version__
+
 
 class Options(object):
     """The actual class where the options data are stored."""
@@ -64,9 +69,6 @@ class Options(object):
 class GsyncListOptionsType(type):
     """An type interface to the static GsyncListOptions class."""
     def __initialise_class(cls):
-        from docopt import docopt
-        from libgsync.options import doc
-        from libgsync import __version__
 
         options = docopt(
             doc.__doc__ % __version__,
@@ -94,7 +96,6 @@ class GsyncListOptionsType(type):
 
     def __setattr__(cls, name, value):
         # Substitut option names: --an-option-name for an_option_name
-        import re
         name = re.sub(r'^__', "", re.sub(r'-', "_", name))
         listvalue = []
 

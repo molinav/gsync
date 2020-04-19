@@ -29,6 +29,7 @@ except ImportError:  # pragma: no cover
 from libgsync.output import debug
 from libgsync.drive.mimetypes import MimeTypes
 from libgsync.options import GsyncOptions
+from libgsync.sync.file.factory import SyncFileFactory
 
 
 class EUnknownSourceType(Exception):  # pragma: no cover
@@ -411,7 +412,6 @@ class SyncFile(object):
         debug("type(src) = %s" % type(src))
 
         if src is not None:
-            from libgsync.sync.file.factory import SyncFileFactory
 
             if isinstance(src, SyncFileInfo):
                 src_info = src
