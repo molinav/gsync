@@ -681,7 +681,7 @@ class Drive(object):
 
                 debug("Got %d entities back" % len(ents))
 
-                if len(ents) == 0:
+                if not ents:
                     return None
 
                 ent = self._find_entity(searchname, ents)
@@ -942,7 +942,7 @@ class Drive(object):
         if not include_trash:
             query.append('trashed = false')
 
-        if len(query) > 0:
+        if query:
             param['q'] = ' and '.join(query)
 
         with self.service() as service:
