@@ -65,8 +65,7 @@ class SyncFileInfoDatetime(object):
     def __native(self, d_obj):
         if isinstance(d_obj, SyncFileInfoDatetime):
             return d_obj.get_value()
-        else:
-            return d_obj
+        return d_obj
 
     def __init__(self, datestring):
         d_obj = dateutil.parser.parse(datestring, ignoretz=True)
