@@ -123,4 +123,4 @@ class FilterObject(object):
         self.rules.append((mod, pattern))
 
 
-Filter = FilterObject() # pylint: disable-msg=C0103
+Filter = FilterObject()  # pylint: disable-msg=C0103

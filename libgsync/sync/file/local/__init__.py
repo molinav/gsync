@@ -25,7 +25,7 @@ class SyncFileLocal(SyncFile):
 
     def get_uploader(self, path=None):
         info = self.get_info(path)
-        if info is None: # pragma: no cover
+        if info is None:  # pragma: no cover
             raise Exception("Could not obtain file information: %s" % path)
 
         path = self.get_path(path)
@@ -76,7 +76,7 @@ class SyncFileLocal(SyncFile):
             debug("Local file = %s" % repr(info), 3)
             debug("Local mtime: %s" % repr(info.modifiedDate))
 
-        except OSError: # pragma: no cover
+        except OSError:  # pragma: no cover
             debug("File not found: %s" % repr(path))
             return None
 
@@ -96,13 +96,13 @@ class SyncFileLocal(SyncFile):
         if attrs.uid is not None:
             try:
                 os.chown(path, attrs.uid, -1)
-            except OSError: # pragma: no cover
+            except OSError:  # pragma: no cover
                 pass
 
         if attrs.gid is not None:
             try:
                 os.chown(path, -1, attrs.gid)
-            except OSError: # pragma: no cover
+            except OSError:  # pragma: no cover
                 pass
 
         if attrs.mode is not None:
@@ -137,7 +137,7 @@ class SyncFileLocal(SyncFile):
 
                 return md5_gen.hexdigest()
 
-        except Exception as ex: # pragma: no cover
+        except Exception as ex:  # pragma: no cover
             debug.exception(ex)
 
         return None
@@ -166,7 +166,7 @@ class SyncFileLocal(SyncFile):
             if not GsyncOptions.dry_run:
                 fd = open(path, "w")
 
-        except Exception as ex: # pragma: no cover
+        except Exception as ex:  # pragma: no cover
             debug("Creation failed: %s" % repr(ex))
 
         finally:
@@ -212,16 +212,16 @@ class SyncFileLocal(SyncFile):
             debug("    Written %d bytes" % bytes_written)
             progress.complete(bytes_written)
 
-            if bytes_written < file_size: # pragma: no cover
+            if bytes_written < file_size:  # pragma: no cover
                 raise Exception("Got %d bytes, expected %d bytes" % (
                     bytes_written, file_size
                 ))
 
-        except KeyboardInterrupt: # pragma: no cover
+        except KeyboardInterrupt:  # pragma: no cover
             debug("Interrupted")
             raise
 
-        except Exception as ex: # pragma: no cover
+        except Exception as ex:  # pragma: no cover
             debug("Write failed: %s" % repr(ex))
             raise
 

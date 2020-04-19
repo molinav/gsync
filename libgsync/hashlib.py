@@ -14,4 +14,4 @@ __all__ = ("new",)
 
 import hashlib
 
-new = getattr(hashlib, "new", lambda x: None) # pylint: disable-msg=C0103
+new = getattr(hashlib, "new", lambda x: None)  # pylint: disable-msg=C0103

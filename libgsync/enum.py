@@ -9,5 +9,5 @@
 class Enum(object):
     """Enum class"""
 
-    def __init__(self): # pragma: no cover
+    def __init__(self):  # pragma: no cover
         raise TypeError

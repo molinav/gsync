@@ -17,14 +17,14 @@ from dateutil.tz import tzutc
 from contextlib import contextmanager
 
 # Setup default retryer.
-retryer = retrying.retry( # pylint: disable-msg=C0103
+retryer = retrying.retry(  # pylint: disable-msg=C0103
     wait='fixed_sleep', wait_fixed=60000,
     stop='stop_after_attempt', stop_max_attempt_number=2
 )
 
 try:
     import simplejson as json
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     import json
 
 import oauth2client.util
@@ -37,22 +37,22 @@ from libgsync.output import verbose, debug
 from libgsync.drive.mimetypes import MimeTypes
 from libgsync.drive.file import DriveFile
 
-if debug.enabled(): # pragma: no cover
+if debug.enabled():  # pragma: no cover
     import logging
     logging.getLogger().setLevel(logging.DEBUG)
 
 
-class NoTTYError(Exception): # pragma: no cover
+class NoTTYError(Exception):  # pragma: no cover
     """Raised for non-tty based terminal exceptions"""
     pass
 
 
-class ExchangeError(Exception): # pragma: no cover
+class ExchangeError(Exception):  # pragma: no cover
     """Step2_Exchange based exception type"""
     pass
 
 
-class FileNotFoundError(Exception): # pragma: no cover
+class FileNotFoundError(Exception):  # pragma: no cover
     """Raised when expected files/directories are not found"""
     def __init__(self, filename):
         super(FileNotFoundError, self).__init__(
@@ -61,7 +61,7 @@ class FileNotFoundError(Exception): # pragma: no cover
         self.filename = filename
 
 
-class NoServiceError(Exception): # pragma: no cover
+class NoServiceError(Exception):  # pragma: no cover
     """Raised when a service could not be obtained from apiclient"""
     pass
 
@@ -106,7 +106,7 @@ class DriveFileObject(object):
 
         self._dirname, self._filename = os.path.split(path)
 
-    def __repr__(self): # pragma: no cover
+    def __repr__(self):  # pragma: no cover
         return "%s(%s, %s)" % (
             self.__class__.__name__, repr(self._path), repr(self._mode)
         )
@@ -153,7 +153,7 @@ class DriveFileObject(object):
         """Marks the file as closed to prevent further IO operations"""
         self.closed = True
 
-    def flush(self): # pragma: no cover
+    def flush(self):  # pragma: no cover
         """Provides file interface method, but does nothing"""
         pass
 
@@ -176,7 +176,7 @@ class DriveFileObject(object):
 
     # A pseudo function really, has no effect if no data is written after
     # calling this method.
-    def truncate(self, size=None): # pragma: no cover
+    def truncate(self, size=None):  # pragma: no cover
         """
         Truncates the file by locally setting its size to zero, but has
         no effect on the server side copy until the file is written to.
@@ -195,7 +195,7 @@ class DriveFileObject(object):
         self._required_open()
 
         with Drive().service() as service:
-            http = service._http # pylint: disable-msg=W0212
+            http = service._http  # pylint: disable-msg=W0212
             http.follow_redirects = False
 
             if length is None:
@@ -222,7 +222,7 @@ class DriveFileObject(object):
             retry = res.status in [301, 302, 303, 307, 308] \
                 and 'location' in res
 
-            if retry: # pragma: no cover
+            if retry:  # pragma: no cover
                 url = res['location']
                 res, data = http.request(url, headers=headers)
 
@@ -230,7 +230,7 @@ class DriveFileObject(object):
                 self._offset += length
                 return data
 
-        return "" # pragma: no cover
+        return ""  # pragma: no cover
 
     def write(self, data):
         """
@@ -238,7 +238,7 @@ class DriveFileObject(object):
 
         Currently not supported by Google Drive API.
         """
-        data = data # static_cast<void>(data) for pylint
+        data = data  # static_cast<void>(data) for pylint
         self._required_open()
         self._required_modes(["w", "a"])
 
@@ -318,10 +318,10 @@ class Drive(object):
                 try:
                     strval_unicode = strval.decode(enc)
                     break
-                except UnicodeDecodeError: # pragma: no cover
+                except UnicodeDecodeError:  # pragma: no cover
                     pass
 
-        if strval_unicode is None: # pragma: no cover
+        if strval_unicode is None:  # pragma: no cover
             raise UnicodeDecodeError("Failed to decode: %s" % repr(strval))
 
         return strval_unicode
@@ -394,7 +394,7 @@ class Drive(object):
 
         yield self._service
 
-    def __del__(self): # pragma: no cover
+    def __del__(self):  # pragma: no cover
         debug("Saving credentials...")
         credentials = self._credentials
         if credentials:

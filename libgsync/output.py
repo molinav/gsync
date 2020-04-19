@@ -241,12 +241,12 @@ class Critical(object):
         ))
 
 
-verbose = Verbose() # pylint: disable-msg=C0103
-debug = Debug() # pylint: disable-msg=C0103
-itemize = Itemize() # pylint: disable-msg=C0103
-critical = Critical() # pylint: disable-msg=C0103
+verbose = Verbose()  # pylint: disable-msg=C0103
+debug = Debug()  # pylint: disable-msg=C0103
+itemize = Itemize()  # pylint: disable-msg=C0103
+critical = Critical()  # pylint: disable-msg=C0103
 
 __all__ = ["verbose", "debug", "itemize", "critical"]
 
-if os.environ.get('GSYNC_DEBUG', '0') == '1': # pragma: no cover
+if os.environ.get('GSYNC_DEBUG', '0') == '1':  # pragma: no cover
     debug.enable()
