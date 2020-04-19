@@ -9,6 +9,7 @@ import os
 from libgsync.output import debug
 from libgsync.drive import Drive
 
+
 class SyncFileFactory(object):
     """
     SyncFileFactory class creates either a remote or local SyncFile

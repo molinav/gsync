@@ -22,24 +22,19 @@ class SyncFileRemote(SyncFile):
         super(SyncFileRemote, self).__init__(path)
         self._path = self.normpath(path)
 
-
     def __repr__(self):
         return "SyncFileRemote(%s)" % repr(self._path)
-
 
     def sync_type(self):
         return SyncType.REMOTE
 
-
     def normpath(self, path):
         return Drive().normpath(path)
-
 
     def strippath(self, path):
         """Strips path of the 'drive://' prefix using the Drive() method"""
 
         return Drive().strippath(path)
-
 
     def get_path(self, path = None):
         if path is None or path == "":
@@ -56,7 +51,6 @@ class SyncFileRemote(SyncFile):
         debug(" * got: %s" % repr(ret))
         return ret
 
-
     def get_uploader(self, path = None):
         info = self.get_info(path)
         if info is None:
@@ -72,7 +66,6 @@ class SyncFileRemote(SyncFile):
             raise Exception("Open failed: %s" % path)
 
         return MediaIoBaseUpload(fd, info.mimeType, resumable=True)
-
 
     def get_info(self, path = None):
         path = self.get_path(path)
@@ -93,14 +86,12 @@ class SyncFileRemote(SyncFile):
 
         return info
 
-
     def _create_dir(self, path, src = None):
         debug("Creating remote directory: %s" % repr(path))
 
         if not GsyncOptions.dry_run:
             drive = Drive()
             drive.mkdir(path)
-
 
     def _create_symlink(self, path, src):
         debug("Creating remote symlink: %s" % repr(path))
@@ -109,7 +100,6 @@ class SyncFileRemote(SyncFile):
             #link_source = src.
             #os.symlink(, path)
             pass
-
 
     def _create_file(self, path, src):
         debug("Creating remote file: %s" % repr(path))
@@ -123,10 +113,8 @@ class SyncFileRemote(SyncFile):
         if info is None:
             debug("Creation failed")
 
-
     def _update_dir(self, path, src):
         pass
-
 
     def _update_data(self, path, src):
         debug("Updating remote file: %s" % repr(path))
@@ -161,7 +149,6 @@ class SyncFileRemote(SyncFile):
 
         progress.complete(bytes_written)
         self.bytes_written = total_bytes_written + bytes_written
-
 
     def _update_attrs(self, path, src, attrs):
         debug("Updating remote file attrs: %s" % repr(path))

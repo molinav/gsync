@@ -10,6 +10,7 @@ operations and for defining simple Google Drive types.
 
 from __future__ import absolute_import
 
+
 class MimeTypes(object):
     """The MimeTypes static API class"""
 

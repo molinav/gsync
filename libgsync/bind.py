@@ -5,8 +5,10 @@
 
 """Module for providing a function paramater binding closure"""
 
+
 class BindNoFuncError(Exception):
     pass
+
 
 class bind(object):
     """Binds a function to a set of arguments and a defined context"""

@@ -105,7 +105,6 @@ class Crawler(object):
 
         #super(Crawler, self).__init__(name = "Crawler: %s" % src)
 
-
     def _dev_check(self, device_id, path):
         """
         Checks if the path provided resides on the device specified by the
@@ -124,7 +123,6 @@ class Crawler(object):
                 return False
 
         return True
-
 
     def _walk(self, path, generator, device_id):
         """
@@ -164,7 +162,6 @@ class Crawler(object):
 
             if not GsyncOptions.recursive:
                 break
-
 
     def run(self):
         """
@@ -206,4 +203,3 @@ class Crawler(object):
                 self._sync.total_bytes_received,
                 self._sync.rate()
             ))
-

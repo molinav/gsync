@@ -399,7 +399,6 @@ class SyncFile(object):
 
         self._update_attrs(path, src, attrs)
 
-
     def _normalise_source(self, src):
         """Normalises the source parameter, which can be one of:
 

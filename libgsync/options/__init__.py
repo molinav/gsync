@@ -55,6 +55,7 @@ So this actually means that GsyncOptions is actually a static proxy class...
 
 __all__ = [ "GsyncOptions" ]
 
+
 class Options(object):
     """The actual class where the options data are stored."""
     __initialised = False

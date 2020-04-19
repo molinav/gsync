@@ -83,10 +83,8 @@ class SyncFileLocal(SyncFile):
 
         return info
 
-
     def _update_dir(self, path, src):
         pass
-
 
     def _update_attrs(self, path, src, attrs):
         debug("Updating local file stats: %s" % repr(path))
@@ -118,7 +116,6 @@ class SyncFileLocal(SyncFile):
         if attrs.mtime is not None:
             os.utime(path, (attrs.atime, attrs.mtime))
 
-
     def _md5_checksum(self, path):
         """Returns the checksum of the file"""
 
@@ -144,13 +141,11 @@ class SyncFileLocal(SyncFile):
 
         return None
 
-
     def _create_dir(self, path, src=None):
         debug("Creating local directory: %s" % repr(path))
 
         if not GsyncOptions.dry_run:
             os.mkdir(path)
-
 
     def _create_symlink(self, path, src):
         debug("Creating local symlink: %s" % repr(path))
@@ -159,7 +154,6 @@ class SyncFileLocal(SyncFile):
             #link_source = src.
             #os.symlink(, path)
             pass
-
 
     def _create_file(self, path, src):
         path = self.get_path(path)
@@ -177,7 +171,6 @@ class SyncFileLocal(SyncFile):
         finally:
             if fd is not None:
                 fd.close()
-
 
     def _update_data(self, path, src):
         path = self.get_path(path)
@@ -234,4 +227,3 @@ class SyncFileLocal(SyncFile):
         finally:
             if fd is not None:
                 fd.close()
-

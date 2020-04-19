@@ -40,9 +40,11 @@ class NoTTYError(Exception): # pragma: no cover
     """Raised for non-tty based terminal exceptions"""
     pass
 
+
 class ExchangeError(Exception): # pragma: no cover
     """Step2_Exchange based exception type"""
     pass
+
 
 class FileNotFoundError(Exception): # pragma: no cover
     """Raised when expected files/directories are not found"""
@@ -51,6 +53,7 @@ class FileNotFoundError(Exception): # pragma: no cover
             "File not found: %s" % repr(filename))
 
         self.filename = filename
+
 
 class NoServiceError(Exception): # pragma: no cover
     """Raised when a service could not be obtained from apiclient"""
