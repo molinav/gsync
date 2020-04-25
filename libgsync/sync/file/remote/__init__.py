@@ -46,8 +46,7 @@ class SyncFileRemote(SyncFile):
         stripped_rel_path = self.strippath(path)
 
         debug("Joining: %s with %s" % (
-            repr(stripped_path), repr(stripped_rel_path))
-        )
+            repr(stripped_path), repr(stripped_rel_path)))
         ret = self.normpath(os.path.join(stripped_path, stripped_rel_path))
 
         debug(" * got: %s" % repr(ret))

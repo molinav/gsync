@@ -432,8 +432,7 @@ class SyncFile(object):
 
             else:
                 raise EUnknownSourceType("%s is a %s" % (
-                    repr(src), type(src))
-                )
+                    repr(src), type(src)))
 
         debug("src_info = %s" % repr(src_info), 3)
 

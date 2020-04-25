@@ -411,8 +411,7 @@ class Drive(object):
     def _get_config_dir(subdir=None):
         """Returns the path to the gsync config directory"""
         configdir = os.getenv('GSYNC_CONFIG_DIR',
-            os.path.join(os.getenv('HOME', '~'), '.gsync')
-        )
+                              os.path.join(os.getenv('HOME', '~'), '.gsync'))
         debug("Config dir = %s" % configdir)
 
         if not os.path.exists(configdir):
