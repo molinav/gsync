@@ -25,8 +25,8 @@ from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from apiclient.discovery import build_from_document
 from apiclient.discovery import DISCOVERY_URI
-import uritemplate
 from apiclient.http import MediaUploadProgress
+import uritemplate
 from libgsync.output import debug
 from libgsync.drive.mimetypes import MimeTypes
 from libgsync.drive.file import DriveFile
