@@ -108,7 +108,8 @@ class Crawler(object):
 
         #super(Crawler, self).__init__(name = "Crawler: %s" % src)
 
-    def _dev_check(self, device_id, path):
+    @staticmethod
+    def _dev_check(device_id, path):
         """
         Checks if the path provided resides on the device specified by the
         device ID provided.

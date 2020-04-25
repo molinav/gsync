@@ -32,7 +32,8 @@ class SyncFileRemote(SyncFile):
     def normpath(self, path):
         return Drive().normpath(path)
 
-    def strippath(self, path):
+    @staticmethod
+    def strippath(path):
         """Strips path of the 'drive://' prefix using the Drive() method"""
 
         return Drive().strippath(path)

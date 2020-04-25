@@ -407,7 +407,8 @@ class Drive(object):
 
         debug("My pid = %d" % os.getpid())
 
-    def _get_config_dir(self, subdir=None):
+    @staticmethod
+    def _get_config_dir(subdir=None):
         """Returns the path to the gsync config directory"""
         configdir = os.getenv('GSYNC_CONFIG_DIR',
             os.path.join(os.getenv('HOME', '~'), '.gsync')
@@ -551,13 +552,15 @@ class Drive(object):
         if not topdown:
             yield top, dirs, nondirs
 
-    def is_rootpath(self, path):
+    @staticmethod
+    def is_rootpath(path):
         """
         Returns True if the path provided is the root of the Google Drive.
         """
         return bool(re.search(r'^drive:/+$', path) is not None)
 
-    def is_drivepath(self, path):
+    @staticmethod
+    def is_drivepath(path):
         """
         Returns True if the path provided is path within the Google Drive.
         """
@@ -571,14 +574,16 @@ class Drive(object):
         if not self.is_drivepath(path):
             raise ValueError("Invalid path: %s" % path)
 
-    def strippath(self, path):
+    @staticmethod
+    def strippath(path):
         """
         Strips the 'drive://' part from the path, creating a local POSIX
         path representation of the file.
         """
         return re.sub(r'^(?:drive:/*|/+)', '/', os.path.normpath(path))
 
-    def normpath(self, path):
+    @staticmethod
+    def normpath(path):
         """
         Opposite to the 'strippath' method, it ensures the path is prefixed
         with the 'drive://' prefix, creating the remote representation of the
@@ -607,7 +612,8 @@ class Drive(object):
 
         return pathlist
 
-    def _find_entity(self, name, ents):
+    @staticmethod
+    def _find_entity(name, ents):
         """
         Finds an entity in a list of entities returned in a Drive query.
         """
@@ -774,7 +780,8 @@ class Drive(object):
 
         return names
 
-    def open(self, path, mode="r"):
+    @staticmethod
+    def open(path, mode="r"):
         """
         Returns a DriveFileObject as a python file type object wrapper to
         the remote file specified by the path.  See DriveFileObject.

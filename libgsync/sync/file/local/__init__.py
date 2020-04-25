@@ -117,7 +117,8 @@ class SyncFileLocal(SyncFile):
         if attrs.mtime is not None:
             os.utime(path, (attrs.atime, attrs.mtime))
 
-    def _md5_checksum(self, path):
+    @staticmethod
+    def _md5_checksum(path):
         """Returns the checksum of the file"""
 
         if os.path.isdir(path):

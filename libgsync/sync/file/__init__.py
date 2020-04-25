@@ -63,7 +63,8 @@ class SyncFileInfoDatetime(object):
 
         return self.__value
 
-    def __native(self, d_obj):
+    @staticmethod
+    def __native(d_obj):
         if isinstance(d_obj, SyncFileInfoDatetime):
             return d_obj.get_value()
         return d_obj
@@ -401,7 +402,8 @@ class SyncFile(object):
 
         self._update_attrs(path, src, attrs)
 
-    def _normalise_source(self, src):
+    @staticmethod
+    def _normalise_source(src):
         """Normalises the source parameter, which can be one of:
 
         @param {SyncFile|str|SyncFileInfo} src
@@ -470,7 +472,8 @@ class SyncFile(object):
 
         self.__update_attrs(path, src_obj)
 
-    def normpath(self, path):
+    @staticmethod
+    def normpath(path):
         """Virtual method providing subclasses the ability to override it"""
 
         return os.path.normpath(path)

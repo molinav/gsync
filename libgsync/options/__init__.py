@@ -119,7 +119,8 @@ class GsyncListOptions(object):
 class GsyncOptionsType(GsyncListOptionsType):
     """A type interface to the static GsyncOptions class."""
 
-    def list(cls):
+    @staticmethod
+    def list():
         """Interface for accessing options in list form."""
         return GsyncListOptions
 
