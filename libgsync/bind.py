@@ -7,10 +7,11 @@
 
 
 class BindNoFuncError(Exception):
+    """Custom exception raised when binding non-callables."""
     pass
 
 
-class bind(object):
+class bind(object):  # pylint: disable=invalid-name
     """Binds a function to a set of arguments and a defined context"""
 
     def __init__(self, func, context, *args):

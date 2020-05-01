@@ -8,7 +8,8 @@
 import os
 import datetime
 from dateutil.tz import tzutc
-from apiclient.http import MediaIoBaseUpload, MediaUploadProgress
+from apiclient.http import MediaIoBaseUpload  # pylint: disable=import-error
+from apiclient.http import MediaUploadProgress  # pylint: disable=import-error
 from libgsync.output import debug, Progress
 from libgsync.sync import SyncType
 from libgsync.sync.file import SyncFile, SyncFileInfo

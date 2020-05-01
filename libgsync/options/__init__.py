@@ -86,7 +86,7 @@ class GsyncListOptionsType(type):
 
     def __getattr__(cls, name):
         if not Options._Options__initialised:  # pylint: disable-msg=W0212
-            cls.__initialise_class()
+            cls.__initialise_class()  # pylint: disable=no-value-for-parameter
             Options._Options__initialised = True  # pylint: disable-msg=W0212
 
         if not hasattr(Options, name):

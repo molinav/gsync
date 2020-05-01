@@ -23,9 +23,11 @@ import retrying
 import oauth2client.util
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
+# pylint: disable=import-error
 from apiclient.discovery import build_from_document
 from apiclient.discovery import DISCOVERY_URI
 from apiclient.http import MediaUploadProgress
+# pylint: enable=import-error
 import uritemplate
 from libgsync.output import debug
 from libgsync.drive.mimetypes import MimeTypes
