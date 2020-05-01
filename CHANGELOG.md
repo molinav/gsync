@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. The format
 is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and the
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Changed
+- Convert `CHANGELIST.rst` into `CHANGELOG.md` and use Markdown in it
+- Update `.pylint` configuration file to use the last up-to-date template
+- Refactor all the code in the library to make the port to Python3 easier
+
 ## [0.1.15] - 2020-03-14
 
 ### Fixed
