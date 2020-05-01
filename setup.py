@@ -24,7 +24,7 @@ setup(
         "Gsync %s - %s" % (__version__, str(datetime.utcnow())),
         open("README.rst").read(),
         "Change history",
-        open("CHANGELIST.rst").read()
+        open("CHANGELOG.md").read()
     ]),
     test_suite="tests",
     setup_requires=[
