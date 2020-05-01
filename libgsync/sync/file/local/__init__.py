@@ -7,10 +7,10 @@
 
 import os
 import datetime
+import hashlib
 from dateutil.tz import tzutc
 from apiclient.http import MediaFileUpload  # pylint: disable=import-error
 from apiclient.http import MediaUploadProgress  # pylint: disable=import-error
-import libgsync.hashlib as hashlib
 from libgsync.output import debug, Progress
 from libgsync.drive.mimetypes import MimeTypes
 from libgsync.sync import SyncType
