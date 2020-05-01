@@ -7,7 +7,8 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## Unreleased
 
 ### Changed
-- Convert `CHANGELIST.rst` into `CHANGELOG.md` and use Markdown in it
+- Upgrade `CHANGELIST.rst` into `CHANGELOG.md` and use Markdown
+- Upgrade `README.rst` into `README.md` and use Markdown
 - Update `.pylint` configuration file to use the last up-to-date template
 - Refactor all the code in the library to make the port to Python3 easier
 
