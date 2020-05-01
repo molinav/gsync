@@ -5,7 +5,8 @@
 
 """Provides an Adapter for local and remote sync file types"""
 
-import os, datetime, time, re
+import os
+import time
 from libgsync.enum import Enum
 from libgsync.output import verbose, debug, itemize
 from libgsync.drive.mimetypes import MimeTypes
@@ -66,7 +67,7 @@ class SyncRules(object):
         """
 
         return self.src_file.mimeType == self.dst_file.mimeType
-    
+
     @debug.function
     def skip_quickcheck(self):
         """Skip files based on files that are the same size and mtime"""
@@ -80,10 +81,8 @@ class SyncRules(object):
         if not self.skip_mimetype():
             return False
 
-        return bool(
-            (GsyncOptions.size_only or self.skip_mtime()) and \
-            self.skip_size()
-        )
+        return bool((GsyncOptions.size_only or self.skip_mtime())
+                    and self.skip_size())
 
     @debug.function
     def skip_mtime(self):
@@ -198,7 +197,7 @@ class SyncRules(object):
             if GsyncOptions.owner and dst_st.st_uid != src_st.st_uid:
                 self.action |= UPDATE_ATTRS
                 self.changes[6] = 'o'
-            
+
             if GsyncOptions.group and dst_st.st_gid != src_st.st_gid:
                 self.action |= UPDATE_ATTRS
                 self.changes[7] = 'g'
@@ -239,7 +238,7 @@ class SyncRules(object):
             if not self._apply_skip_update():
                 self.action |= UPDATE_DATA
 
-        if self.action & ( CREATE | UPDATE_DATA ):
+        if self.action & (CREATE | UPDATE_DATA):
             self.changes[0] = self.sync_type
 
         return self.action, self.changes
@@ -250,8 +249,8 @@ class Sync(object):
 
     src = None
     dst = None
-    total_bytes_sent = 0L
-    total_bytes_received = 0L
+    total_bytes_sent = 0
+    total_bytes_received = 0
     started = None
 
     def __init__(self, src, dst):
@@ -323,6 +322,8 @@ class Sync(object):
         finally:
             self.total_bytes_sent += self.dst.bytes_written
             self.total_bytes_received += self.dst.bytes_read
+
+        return None
 
     def rate(self):
         """Returns the data transfer rate of the synchronisation"""

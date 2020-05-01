@@ -5,14 +5,16 @@
 
 """Remote file synchronisation"""
 
-import os, re, datetime
-from libgsync.output import verbose, debug, itemize, Progress
+import os
+import datetime
+from dateutil.tz import tzutc
+from apiclient.http import MediaIoBaseUpload  # pylint: disable=import-error
+from apiclient.http import MediaUploadProgress  # pylint: disable=import-error
+from libgsync.output import debug, Progress
 from libgsync.sync import SyncType
 from libgsync.sync.file import SyncFile, SyncFileInfo
 from libgsync.options import GsyncOptions
-from apiclient.http import MediaIoBaseUpload, MediaUploadProgress
 from libgsync.drive import Drive
-from dateutil.tz import tzutc
 
 
 class SyncFileRemote(SyncFile):
@@ -22,26 +24,22 @@ class SyncFileRemote(SyncFile):
         super(SyncFileRemote, self).__init__(path)
         self._path = self.normpath(path)
 
-
     def __repr__(self):
         return "SyncFileRemote(%s)" % repr(self._path)
-
 
     def sync_type(self):
         return SyncType.REMOTE
 
-
     def normpath(self, path):
         return Drive().normpath(path)
 
-
-    def strippath(self, path):
+    @staticmethod
+    def strippath(path):
         """Strips path of the 'drive://' prefix using the Drive() method"""
 
         return Drive().strippath(path)
 
-
-    def get_path(self, path = None):
+    def get_path(self, path=None):
         if path is None or path == "":
             return self._path
 
@@ -49,15 +47,13 @@ class SyncFileRemote(SyncFile):
         stripped_rel_path = self.strippath(path)
 
         debug("Joining: %s with %s" % (
-            repr(stripped_path), repr(stripped_rel_path))
-        )
+            repr(stripped_path), repr(stripped_rel_path)))
         ret = self.normpath(os.path.join(stripped_path, stripped_rel_path))
 
         debug(" * got: %s" % repr(ret))
         return ret
 
-
-    def get_uploader(self, path = None):
+    def get_uploader(self, path=None):
         info = self.get_info(path)
         if info is None:
             raise Exception("Could not obtain file information: %s" % path)
@@ -73,8 +69,7 @@ class SyncFileRemote(SyncFile):
 
         return MediaIoBaseUpload(fd, info.mimeType, resumable=True)
 
-
-    def get_info(self, path = None):
+    def get_info(self, path=None):
         path = self.get_path(path)
 
         debug("Fetching remote file metadata: %s" % repr(path))
@@ -93,23 +88,20 @@ class SyncFileRemote(SyncFile):
 
         return info
 
-
-    def _create_dir(self, path, src = None):
+    def _create_dir(self, path, src=None):
         debug("Creating remote directory: %s" % repr(path))
 
         if not GsyncOptions.dry_run:
             drive = Drive()
             drive.mkdir(path)
 
-
     def _create_symlink(self, path, src):
         debug("Creating remote symlink: %s" % repr(path))
 
         if not GsyncOptions.dry_run:
-            #link_source = src.
-            #os.symlink(, path)
+            # link_source = src.
+            # os.symlink(, path)
             pass
-
 
     def _create_file(self, path, src):
         debug("Creating remote file: %s" % repr(path))
@@ -123,10 +115,8 @@ class SyncFileRemote(SyncFile):
         if info is None:
             debug("Creation failed")
 
-
     def _update_dir(self, path, src):
         pass
-
 
     def _update_data(self, path, src):
         debug("Updating remote file: %s" % repr(path))
@@ -154,14 +144,13 @@ class SyncFileRemote(SyncFile):
             )
 
             if info is not None:
-                bytes_written = long(info.get('fileSize', '0'))
+                bytes_written = int(info.get('fileSize', '0'))
                 debug("Final file size: %d" % bytes_written)
             else:
                 debug("Update failed")
 
         progress.complete(bytes_written)
         self.bytes_written = total_bytes_written + bytes_written
-
 
     def _update_attrs(self, path, src, attrs):
         debug("Updating remote file attrs: %s" % repr(path))
@@ -187,13 +176,14 @@ class SyncFileRemote(SyncFile):
         info.set_stat_info(st_info)
 
         mtime_utc = datetime.datetime.utcfromtimestamp(
-            #attrs.mtime).isoformat()
-            #attrs.mtime).replace(tzinfo=tzutc()).isoformat()
-            attrs.mtime).replace(tzinfo=tzutc()).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
+            # attrs.mtime).isoformat()
+            # attrs.mtime).replace(tzinfo=tzutc()).isoformat()
+            attrs.mtime).replace(tzinfo=tzutc()).strftime(
+                "%Y-%m-%dT%H:%M:%S.%f%z")
 
-        Drive().update(path, properties = {
+        Drive().update(path, properties={
             'description': info.description,
             'modifiedDate': mtime_utc,
-        }, options = {
+        }, options={
             'setModifiedDate': GsyncOptions.times
         })

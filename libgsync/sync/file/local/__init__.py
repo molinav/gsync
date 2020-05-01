@@ -5,15 +5,17 @@
 
 """Local version of the SyncFile type for handling local file access"""
 
-import os, datetime
+import os
+import datetime
+from dateutil.tz import tzutc
+from apiclient.http import MediaFileUpload  # pylint: disable=import-error
+from apiclient.http import MediaUploadProgress  # pylint: disable=import-error
 import libgsync.hashlib as hashlib
-from libgsync.output import verbose, debug, itemize, Progress
+from libgsync.output import debug, Progress
 from libgsync.drive.mimetypes import MimeTypes
 from libgsync.sync import SyncType
 from libgsync.sync.file import SyncFile, SyncFileInfo
 from libgsync.options import GsyncOptions
-from apiclient.http import MediaFileUpload, MediaUploadProgress
-from dateutil.tz import tzutc
 
 
 class SyncFileLocal(SyncFile):
@@ -22,9 +24,9 @@ class SyncFileLocal(SyncFile):
     def sync_type(self):
         return SyncType.LOCAL
 
-    def get_uploader(self, path = None):
+    def get_uploader(self, path=None):
         info = self.get_info(path)
-        if info is None: # pragma: no cover
+        if info is None:  # pragma: no cover
             raise Exception("Could not obtain file information: %s" % path)
 
         path = self.get_path(path)
@@ -33,10 +35,10 @@ class SyncFileLocal(SyncFile):
         open(path, "r").close()
 
         return MediaFileUpload(
-            path, mimetype = info.mimeType, resumable = True
+            path, mimetype=info.mimeType, resumable=True
         )
 
-    def get_info(self, path = None):
+    def get_info(self, path=None):
         path = self.get_path(path)
 
         debug("Fetching local file metadata: %s" % repr(path))
@@ -63,9 +65,9 @@ class SyncFileLocal(SyncFile):
                 title=filename,
                 modifiedDate=datetime.datetime.utcfromtimestamp(
                     st_info.st_mtime
-                    #).isoformat(),
-                    #).replace(tzinfo=tzutc()).isoformat(),
-                    ).replace(tzinfo=tzutc()).strftime("%Y-%m-%dT%H:%M:%S.%f%z"),
+                    # ).isoformat(),
+                    # ).replace(tzinfo=tzutc()).isoformat(),
+                ).replace(tzinfo=tzutc()).strftime("%Y-%m-%dT%H:%M:%S.%f%z"),
                 mimeType=mimetype,
                 description=st_info,
                 fileSize=st_info.st_size,
@@ -75,7 +77,7 @@ class SyncFileLocal(SyncFile):
             debug("Local file = %s" % repr(info), 3)
             debug("Local mtime: %s" % repr(info.modifiedDate))
 
-        except OSError: # pragma: no cover
+        except OSError:  # pragma: no cover
             debug("File not found: %s" % repr(path))
             return None
 
@@ -83,10 +85,8 @@ class SyncFileLocal(SyncFile):
 
         return info
 
-
     def _update_dir(self, path, src):
         pass
-
 
     def _update_attrs(self, path, src, attrs):
         debug("Updating local file stats: %s" % repr(path))
@@ -97,13 +97,13 @@ class SyncFileLocal(SyncFile):
         if attrs.uid is not None:
             try:
                 os.chown(path, attrs.uid, -1)
-            except OSError: # pragma: no cover
+            except OSError:  # pragma: no cover
                 pass
 
         if attrs.gid is not None:
             try:
                 os.chown(path, -1, attrs.gid)
-            except OSError: # pragma: no cover
+            except OSError:  # pragma: no cover
                 pass
 
         if attrs.mode is not None:
@@ -118,8 +118,8 @@ class SyncFileLocal(SyncFile):
         if attrs.mtime is not None:
             os.utime(path, (attrs.atime, attrs.mtime))
 
-
-    def _md5_checksum(self, path):
+    @staticmethod
+    def _md5_checksum(path):
         """Returns the checksum of the file"""
 
         if os.path.isdir(path):
@@ -139,11 +139,10 @@ class SyncFileLocal(SyncFile):
 
                 return md5_gen.hexdigest()
 
-        except Exception, ex: # pragma: no cover
+        except Exception as ex:  # pragma: no cover
             debug.exception(ex)
 
         return None
-
 
     def _create_dir(self, path, src=None):
         debug("Creating local directory: %s" % repr(path))
@@ -151,15 +150,13 @@ class SyncFileLocal(SyncFile):
         if not GsyncOptions.dry_run:
             os.mkdir(path)
 
-
     def _create_symlink(self, path, src):
         debug("Creating local symlink: %s" % repr(path))
 
         if not GsyncOptions.dry_run:
-            #link_source = src.
-            #os.symlink(, path)
+            # link_source = src.
+            # os.symlink(, path)
             pass
-
 
     def _create_file(self, path, src):
         path = self.get_path(path)
@@ -171,13 +168,12 @@ class SyncFileLocal(SyncFile):
             if not GsyncOptions.dry_run:
                 fd = open(path, "w")
 
-        except Exception, ex: # pragma: no cover
+        except Exception as ex:  # pragma: no cover
             debug("Creation failed: %s" % repr(ex))
 
         finally:
             if fd is not None:
                 fd.close()
-
 
     def _update_data(self, path, src):
         path = self.get_path(path)
@@ -218,20 +214,19 @@ class SyncFileLocal(SyncFile):
             debug("    Written %d bytes" % bytes_written)
             progress.complete(bytes_written)
 
-            if bytes_written < file_size: # pragma: no cover
+            if bytes_written < file_size:  # pragma: no cover
                 raise Exception("Got %d bytes, expected %d bytes" % (
                     bytes_written, file_size
                 ))
 
-        except KeyboardInterrupt: # pragma: no cover
+        except KeyboardInterrupt:  # pragma: no cover
             debug("Interrupted")
             raise
 
-        except Exception, ex: # pragma: no cover
+        except Exception as ex:  # pragma: no cover
             debug("Write failed: %s" % repr(ex))
             raise
 
         finally:
             if fd is not None:
                 fd.close()
-

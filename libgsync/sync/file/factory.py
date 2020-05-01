@@ -9,6 +9,7 @@ import os
 from libgsync.output import debug
 from libgsync.drive import Drive
 
+
 class SyncFileFactory(object):
     """
     SyncFileFactory class creates either a remote or local SyncFile
@@ -26,12 +27,8 @@ class SyncFileFactory(object):
 
         if drive.is_drivepath(path):
             filepath = drive.normpath(path)
-
             from libgsync.sync.file.remote import SyncFileRemote
             return SyncFileRemote(filepath)
-
-        else:
-            filepath = os.path.normpath(path)
-
-            from libgsync.sync.file.local import SyncFileLocal
-            return SyncFileLocal(filepath)
+        filepath = os.path.normpath(path)
+        from libgsync.sync.file.local import SyncFileLocal
+        return SyncFileLocal(filepath)

@@ -4,47 +4,65 @@
 # Copyright (C) 2013-2014 Craig Phillips.  All rights reserved.
 
 """The GSync Drive module that provides an interface to the Google Drive"""
+from __future__ import print_function
 
-import os, sys, re, datetime, shelve, time, retrying
-
-from dateutil.tz import tzutc
+import os
+import re
+import sys
+import datetime
+import inspect
 from contextlib import contextmanager
+from dateutil.tz import tzutc
+
+try:
+    import simplejson as json
+except ImportError:  # pragma: no cover
+    import json
+import httplib2
+import retrying
+import oauth2client.util
+from oauth2client.client import flow_from_clientsecrets
+from oauth2client.file import Storage
+# pylint: disable=import-error
+from apiclient.discovery import build_from_document
+from apiclient.discovery import DISCOVERY_URI
+from apiclient.http import MediaUploadProgress
+# pylint: enable=import-error
+import uritemplate
+from libgsync.output import debug
+from libgsync.drive.mimetypes import MimeTypes
+from libgsync.drive.file import DriveFile
+
+if debug.enabled():  # pragma: no cover
+    import logging
+    logging.getLogger().setLevel(logging.DEBUG)
+
+try:
+    input = raw_input  # pylint: disable=redefined-builtin,invalid-name
+except NameError:
+    pass
+
+oauth2client.util.positional_parameters_enforcement = \
+    oauth2client.util.POSITIONAL_IGNORE
 
 # Setup default retryer.
-retryer = retrying.retry( # pylint: disable-msg=C0103
+retryer = retrying.retry(  # pylint: disable-msg=C0103
     wait='fixed_sleep', wait_fixed=60000,
     stop='stop_after_attempt', stop_max_attempt_number=2
 )
 
-try:
-    import simplejson as json
-except ImportError: # pragma: no cover
-    import json
 
-import oauth2client.util
-oauth2client.util.positional_parameters_enforcement = \
-    oauth2client.util.POSITIONAL_IGNORE
-
-from oauth2client.client import OAuth2Credentials
-from apiclient.http import MediaUploadProgress
-from libgsync.output import verbose, debug
-from libgsync.drive.mimetypes import MimeTypes
-from libgsync.drive.file import DriveFile
-
-if debug.enabled(): # pragma: no cover
-    import logging
-    logging.getLogger().setLevel(logging.DEBUG)
-
-
-class NoTTYError(Exception): # pragma: no cover
+class NoTTYError(Exception):  # pragma: no cover
     """Raised for non-tty based terminal exceptions"""
     pass
 
-class ExchangeError(Exception): # pragma: no cover
+
+class ExchangeError(Exception):  # pragma: no cover
     """Step2_Exchange based exception type"""
     pass
 
-class FileNotFoundError(Exception): # pragma: no cover
+
+class FileNotFoundError(Exception):  # pragma: no cover
     """Raised when expected files/directories are not found"""
     def __init__(self, filename):
         super(FileNotFoundError, self).__init__(
@@ -52,7 +70,8 @@ class FileNotFoundError(Exception): # pragma: no cover
 
         self.filename = filename
 
-class NoServiceError(Exception): # pragma: no cover
+
+class NoServiceError(Exception):  # pragma: no cover
     """Raised when a service could not be obtained from apiclient"""
     pass
 
@@ -61,13 +80,15 @@ class DriveFileObject(object):
     """
     Defines an IO stream wrapper interface to a DriveFile.
     """
-    def __init__(self, path, mode = "r"):
+    def __init__(self, path, mode="r"):
         # Public
         self.closed = False
         self.description = ""
         # https://github.com/iwonbigbro/gsync/issues/73
-        #self.modified_date = datetime.datetime.now().replace(tzinfo=tzutc()).isoformat()
-        self.modified_date = datetime.datetime.now().replace(tzinfo=tzutc()).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
+        # self.modified_date = datetime.datetime.now().replace(
+        #     tzinfo=tzutc()).isoformat()
+        self.modified_date = datetime.datetime.now().replace(
+            tzinfo=tzutc()).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
 
         # Private
         drive = Drive()
@@ -97,7 +118,7 @@ class DriveFileObject(object):
 
         self._dirname, self._filename = os.path.split(path)
 
-    def __repr__(self): # pragma: no cover
+    def __repr__(self):  # pragma: no cover
         return "%s(%s, %s)" % (
             self.__class__.__name__, repr(self._path), repr(self._mode)
         )
@@ -113,7 +134,6 @@ class DriveFileObject(object):
         of required modes.
         """
         if self._mode not in modes:
-            import inspect
             curframe = inspect.currentframe()
             calframe = inspect.getouterframes(curframe, 2)
             name = calframe[1][3]
@@ -144,11 +164,11 @@ class DriveFileObject(object):
         """Marks the file as closed to prevent further IO operations"""
         self.closed = True
 
-    def flush(self): # pragma: no cover
+    def flush(self):  # pragma: no cover
         """Provides file interface method, but does nothing"""
         pass
 
-    def seek(self, offset, whence = 0):
+    def seek(self, offset, whence=0):
         """Sets the current file IO offset"""
         self._required_open()
 
@@ -167,7 +187,7 @@ class DriveFileObject(object):
 
     # A pseudo function really, has no effect if no data is written after
     # calling this method.
-    def truncate(self, size = None): # pragma: no cover
+    def truncate(self, size=None):  # pragma: no cover
         """
         Truncates the file by locally setting its size to zero, but has
         no effect on the server side copy until the file is written to.
@@ -186,7 +206,7 @@ class DriveFileObject(object):
         self._required_open()
 
         with Drive().service() as service:
-            http = service._http # pylint: disable-msg=W0212
+            http = service._http  # pylint: disable-msg=W0212
             http.follow_redirects = False
 
             if length is None:
@@ -210,18 +230,18 @@ class DriveFileObject(object):
             }
 
             res, data = http.request(url, headers=headers)
-            retry = res.status in [ 301, 302, 303, 307, 308 ] \
+            retry = res.status in [301, 302, 303, 307, 308] \
                 and 'location' in res
 
-            if retry: # pragma: no cover
+            if retry:  # pragma: no cover
                 url = res['location']
                 res, data = http.request(url, headers=headers)
 
-            if res.status in [ 200, 206 ]:
+            if res.status in [200, 206]:
                 self._offset += length
                 return data
 
-        return "" # pragma: no cover
+        return ""  # pragma: no cover
 
     def write(self, data):
         """
@@ -229,9 +249,9 @@ class DriveFileObject(object):
 
         Currently not supported by Google Drive API.
         """
-        data = data # static_cast<void>(data) for pylint
+        data = data  # static_cast<void>(data) for pylint
         self._required_open()
-        self._required_modes([ "w", "a" ])
+        self._required_modes(["w", "a"])
 
 
 class DrivePathCache(object):
@@ -262,7 +282,7 @@ class DrivePathCache(object):
     def clear(self, path):
         """Removes an item from the path cache"""
         path = Drive().normpath(path)
-        if self.__data.has_key(path):
+        if path in self.__data:
             del self.__data[path]
 
     def __repr__(self):
@@ -309,10 +329,10 @@ class Drive(object):
                 try:
                     strval_unicode = strval.decode(enc)
                     break
-                except UnicodeDecodeError: # pragma: no cover
+                except UnicodeDecodeError:  # pragma: no cover
                     pass
 
-        if strval_unicode is None: # pragma: no cover
+        if strval_unicode is None:  # pragma: no cover
             raise UnicodeDecodeError("Failed to decode: %s" % repr(strval))
 
         return strval_unicode
@@ -349,21 +369,17 @@ class Drive(object):
                 storage.put(credentials)
 
         debug("Authenticating")
-        import httplib2
 
-        #if debug.enabled(): httplib2.debuglevel = 4
+        # if debug.enabled(): httplib2.debuglevel = 4
 
         http = credentials.authorize(
-            httplib2.Http(cache = self._get_config_dir("http_cache"))
+            httplib2.Http(cache=self._get_config_dir("http_cache"))
         )
 
         debug("Loading Google Drive service from config")
 
-        from apiclient.discovery import build_from_document, DISCOVERY_URI
-
         debug("Downloading API service")
 
-        import uritemplate
         url = uritemplate.expand(DISCOVERY_URI, {
             'api': 'drive',
             'apiVersion': 'v2'
@@ -371,7 +387,7 @@ class Drive(object):
         res, content = http.request(url)
 
         apistr = None
-        if res.status in [ 200, 202 ]:
+        if res.status in [200, 202]:
             # API expires every minute.
             apistr = content
 
@@ -380,12 +396,12 @@ class Drive(object):
 
         debug("Building Google Drive service from document")
         self._service = build_from_document(
-            apistr, http = http, base = DISCOVERY_URI
+            apistr, http=http, base=DISCOVERY_URI
         )
 
         yield self._service
 
-    def __del__(self): # pragma: no cover
+    def __del__(self):  # pragma: no cover
         debug("Saving credentials...")
         credentials = self._credentials
         if credentials:
@@ -395,21 +411,21 @@ class Drive(object):
 
         debug("My pid = %d" % os.getpid())
 
-    def _get_config_dir(self, subdir = None):
+    @staticmethod
+    def _get_config_dir(subdir=None):
         """Returns the path to the gsync config directory"""
         configdir = os.getenv('GSYNC_CONFIG_DIR',
-            os.path.join(os.getenv('HOME', '~'), '.gsync')
-        )
+                              os.path.join(os.getenv('HOME', '~'), '.gsync'))
         debug("Config dir = %s" % configdir)
 
         if not os.path.exists(configdir):
-            os.mkdir(configdir, 0700)
+            os.mkdir(configdir, 0o0700)
 
         if subdir is not None:
             configdir = os.path.join(configdir, subdir)
 
             if not os.path.exists(configdir):
-                os.mkdir(configdir, 0700)
+                os.mkdir(configdir, 0o0700)
 
         return configdir
 
@@ -434,7 +450,6 @@ class Drive(object):
         if not os.path.exists(storagefile):
             open(storagefile, 'a+b').close()
 
-        from oauth2client.file import Storage
         storage = Storage(storagefile)
         self._credential_storage = storage
 
@@ -464,7 +479,7 @@ class Drive(object):
                 with open(client_json, "w") as fd:
                     fd.write(json.dumps(client_obj))
 
-            except Exception, ex:
+            except Exception as ex:
                 debug("Exception: %s" % repr(ex))
                 raise
 
@@ -475,11 +490,10 @@ class Drive(object):
         # one using the app client ID and secret.  Here, we need to obtain an
         # auth URL that the user will need to visit to obtain the user code
         # needed to allow us to obtain a refresh token.
-        from oauth2client.client import flow_from_clientsecrets
         flow = flow_from_clientsecrets(
             client_json,
-            scope = 'https://www.googleapis.com/auth/drive',
-            redirect_uri = 'urn:ietf:wg:oauth:2.0:oob'
+            scope='https://www.googleapis.com/auth/drive',
+            redirect_uri='urn:ietf:wg:oauth:2.0:oob'
         )
 
         auth_uri = flow.step1_get_authorize_url()
@@ -488,7 +502,7 @@ class Drive(object):
 
         code = ""
         while not code:
-            code = raw_input("Type in the received code: ")
+            code = input("Type in the received code: ")
 
         credentials = flow.step2_exchange(code)
         if credentials is None:
@@ -512,7 +526,7 @@ class Drive(object):
 
         try:
             names = self.listdir(top)
-        except Exception, ex:
+        except Exception as ex:
             debug.exception()
             debug("Exception: %s" % repr(ex))
 
@@ -541,13 +555,15 @@ class Drive(object):
         if not topdown:
             yield top, dirs, nondirs
 
-    def is_rootpath(self, path):
+    @staticmethod
+    def is_rootpath(path):
         """
         Returns True if the path provided is the root of the Google Drive.
         """
         return bool(re.search(r'^drive:/+$', path) is not None)
 
-    def is_drivepath(self, path):
+    @staticmethod
+    def is_drivepath(path):
         """
         Returns True if the path provided is path within the Google Drive.
         """
@@ -561,14 +577,16 @@ class Drive(object):
         if not self.is_drivepath(path):
             raise ValueError("Invalid path: %s" % path)
 
-    def strippath(self, path):
+    @staticmethod
+    def strippath(path):
         """
         Strips the 'drive://' part from the path, creating a local POSIX
         path representation of the file.
         """
         return re.sub(r'^(?:drive:/*|/+)', '/', os.path.normpath(path))
 
-    def normpath(self, path):
+    @staticmethod
+    def normpath(path):
         """
         Opposite to the 'strippath' method, it ensures the path is prefixed
         with the 'drive://' prefix, creating the remote representation of the
@@ -597,7 +615,8 @@ class Drive(object):
 
         return pathlist
 
-    def _find_entity(self, name, ents):
+    @staticmethod
+    def _find_entity(name, ents):
         """
         Finds an entity in a list of entities returned in a Drive query.
         """
@@ -627,15 +646,15 @@ class Drive(object):
 
         if ent is not None:
             debug("Found path in path cache: %s" % repr(path))
-            return DriveFile(path = Drive.unicode(path), **ent)
+            return DriveFile(path=Drive.unicode(path), **ent)
 
         # First list root and walk to the requested file from there.
         ent = DriveFile(
-            path = Drive.unicode(self.normpath('/')),
-            id = 'root',
-            title = '/',
-            mimeType = MimeTypes.FOLDER,
-            modifiedDate = "Thu, 01 Jan 1970 00:00:00 +0000"
+            path=Drive.unicode(self.normpath('/')),
+            id='root',
+            title='/',
+            mimeType=MimeTypes.FOLDER,
+            modifiedDate="Thu, 01 Jan 1970 00:00:00 +0000"
         )
 
         # User has requested root directory
@@ -651,7 +670,7 @@ class Drive(object):
         debug("Got %d paths from pathlist(%s)" % (pathslen, repr(path)))
         debug("Got paths: %s" % repr(paths))
 
-        for i in xrange(1, pathslen):
+        for i in range(1, pathslen):
             searchpath = os.path.join(*paths[:i])
             searchname = paths[i]
             search = os.path.join(searchpath, searchname)
@@ -671,7 +690,7 @@ class Drive(object):
 
                 debug("Got %d entities back" % len(ents))
 
-                if len(ents) == 0:
+                if not ents:
                     return None
 
                 ent = self._find_entity(searchname, ents)
@@ -686,7 +705,7 @@ class Drive(object):
 
             if search == path:
                 debug("Found %s" % repr(search))
-                drive_file = DriveFile(path = Drive.unicode(path), **ent)
+                drive_file = DriveFile(path=Drive.unicode(path), **ent)
 
                 debug(" * returning %s" % repr(drive_file), 3)
                 return drive_file
@@ -713,7 +732,7 @@ class Drive(object):
         debug("dirname = %s, basename = %s" % (
             repr(dirname), repr(basename)
         ))
-        if dirname in [ "/", "drive:" ]:
+        if dirname in ["/", "drive:"]:
             parent_id = "root"
         else:
             parent = self.stat(dirname)
@@ -734,16 +753,16 @@ class Drive(object):
 
         with self.service() as service:
             info = service.files().insert(
-                body = {
+                body={
                     'title': basename,
                     'mimeType': MimeTypes.FOLDER,
-                    'parents': [{ 'id': parent_id }]
+                    'parents': [{'id': parent_id}]
                 }
             ).execute()
 
             if info:
                 self._pcache.put(path, info)
-                ent = DriveFile(path = Drive.unicode(normpath), **info)
+                ent = DriveFile(path=Drive.unicode(normpath), **info)
                 return ent
 
         raise IOError("Failed to create directory: %s" % path)
@@ -764,7 +783,8 @@ class Drive(object):
 
         return names
 
-    def open(self, path, mode = "r"):
+    @staticmethod
+    def open(path, mode="r"):
         """
         Returns a DriveFileObject as a python file type object wrapper to
         the remote file specified by the path.  See DriveFileObject.
@@ -830,8 +850,8 @@ class Drive(object):
         debug(" * trying...")
         with self.service() as service:
             ent = service.files().insert(
-                body = body,
-                media_body = ""
+                body=body,
+                media_body=""
             ).execute()
 
             # Clear the cache and update the path cache
@@ -893,7 +913,7 @@ class Drive(object):
                                 MediaUploadProgress(file_size, file_size)
                             )
 
-                except Exception, ex:
+                except Exception as ex:
                     debug("Exception: %s" % str(ex))
                     debug.exception()
 
@@ -932,7 +952,7 @@ class Drive(object):
         if not include_trash:
             query.append('trashed = false')
 
-        if len(query) > 0:
+        if query:
             param['q'] = ' and '.join(query)
 
         with self.service() as service:

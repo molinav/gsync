@@ -20,7 +20,7 @@ Usage:
  gsync [--debug] ( --authenticate | [options]... <path> <path>... )
 
 Arguments:
- <path>                      path to a local file, directory, remote file or 
+ <path>                      path to a local file, directory, remote file or
                              remote directory.  The last argument in the list
                              of provided paths is considered the destination.
                              The destination must be specified along with at

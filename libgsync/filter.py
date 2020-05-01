@@ -7,7 +7,8 @@
 Defines the filter feature of gsync, as specified by --filter like options.
 """
 
-import re, fnmatch
+import re
+import fnmatch
 from libgsync.output import debug
 
 RULEMOD_PAIRS = [
@@ -20,8 +21,8 @@ RULEMOD_PAIRS = [
     ("dir-merge", ":"),
     ("merge", "."),
 ]
-RULES = r"(%s)" % "|".join([ r for r, m in RULEMOD_PAIRS ])
-MODIFIERS = r"([%s])" % "".join([ m for r, m in RULEMOD_PAIRS ])
+RULES = r"(%s)" % "|".join([r for r, m in RULEMOD_PAIRS])
+MODIFIERS = r"([%s])" % "".join([m for r, m in RULEMOD_PAIRS])
 EXPR_RULE_MOD_PATTERN = r"\s*%s,\s*%s\s*(\S+)" % (RULES, MODIFIERS)
 EXPR_RULE_PATTERN = r"\s*%s\s*(\S+)" % (RULES)
 EXPR_MOD_PATTERN = r"\s*,?\s*%s\s*(\S+)" % (MODIFIERS)
@@ -44,7 +45,7 @@ class FilterObject(object):
         self.rules = []
         self.pathcache = {}
         self.merge_dir = ""
-    
+
     def get_modifier(self, path):
         """Returns a rule modifier that matches the given path"""
 
@@ -64,8 +65,8 @@ class FilterObject(object):
         with open(path, "r") as fd:
             for line in fd:
                 self.add_rule(modifier + " " + line)
-                
-    def add_rules(self, rules, modifier = ""):
+
+    def add_rules(self, rules, modifier=""):
         """
         Adds rules to the filter object, specified with 'rules' and an
         optional modifier, where rules do not contain modifiers.
@@ -122,4 +123,4 @@ class FilterObject(object):
         self.rules.append((mod, pattern))
 
 
-Filter = FilterObject() # pylint: disable-msg=C0103
+Filter = FilterObject()  # pylint: disable-msg=C0103

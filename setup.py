@@ -12,25 +12,25 @@ delim = """
 """
 
 setup(
-    name = 'gsync',
-    description = 'GSync - RSync for Google Drive',
-    version = __version__,
-    license = 'BSD License',
-    author = 'Craig Phillips',
-    author_email = 'iwonbigbro@gmail.com',
-    keywords = 'rsync gsync google-drive transfer copy files ftp',
-    url = 'https://github.com/iwonbigbro/gsync',
-    long_description = delim.join([
+    name='gsync',
+    description='GSync - RSync for Google Drive',
+    version=__version__,
+    license='BSD License',
+    author='Craig Phillips',
+    author_email='iwonbigbro@gmail.com',
+    keywords='rsync gsync google-drive transfer copy files ftp',
+    url='https://github.com/iwonbigbro/gsync',
+    long_description=delim.join([
         "Gsync %s - %s" % (__version__, str(datetime.utcnow())),
         open("README.rst").read(),
         "Change history",
         open("CHANGELIST.rst").read()
     ]),
-    test_suite = "tests",
-    setup_requires = [
+    test_suite="tests",
+    setup_requires=[
         'setuptools',
     ],
-    install_requires = [
+    install_requires=[
         'docopt >= 0.6.0',
         'google-api-python-client >= 1.2, < 1.5.0',
         'httplib2 >= 0.8, < 0.16.0',
@@ -41,7 +41,7 @@ setup(
         'retrying >= 1.1.0',
         'urllib3 >= 1.5',
     ],
-    packages = [
+    packages=[
         'libgsync',
         'libgsync.drive',
         'libgsync.options',
@@ -50,7 +50,7 @@ setup(
         'libgsync.sync.file.local',
         'libgsync.sync.file.remote',
     ],
-    scripts = [
+    scripts=[
         'bin/gsync',
     ],
 )

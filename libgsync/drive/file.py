@@ -5,6 +5,7 @@
 
 """Drive file objects"""
 
+
 class DriveFile(dict):
     """
     Defines the DriveFile adapter that provides an interface to a
@@ -12,10 +13,8 @@ class DriveFile(dict):
     """
     __setattr__ = dict.__setitem__
 
-
     def __getattr__(self, key):
         return self.get(key)
-
 
     def __repr__(self):
         return "DriveFile(%s)" % self.items()

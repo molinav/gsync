@@ -10,8 +10,8 @@ its namespace.
 
 from __future__ import absolute_import
 
-__all__ = ( "new" )
+__all__ = ("new",)
 
 import hashlib
 
-new = getattr(hashlib, "new", lambda x: None) # pylint: disable-msg=C0103
+new = getattr(hashlib, "new", lambda x: None)  # pylint: disable-msg=C0103

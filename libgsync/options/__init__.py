@@ -53,7 +53,13 @@ static singlton values.
 So this actually means that GsyncOptions is actually a static proxy class...
 """
 
-__all__ = [ "GsyncOptions" ]
+__all__ = ["GsyncOptions"]
+
+import re
+from docopt import docopt
+from libgsync.options import doc
+from libgsync import __version__
+
 
 class Options(object):
     """The actual class where the options data are stored."""
@@ -63,14 +69,11 @@ class Options(object):
 class GsyncListOptionsType(type):
     """An type interface to the static GsyncListOptions class."""
     def __initialise_class(cls):
-        from docopt import docopt
-        from libgsync.options import doc
-        from libgsync import __version__
 
         options = docopt(
             doc.__doc__ % __version__,
-            version = __version__,
-            options_first = True
+            version=__version__,
+            options_first=True
         )
 
         paths = options.pop('<path>', None)
@@ -78,22 +81,21 @@ class GsyncListOptionsType(type):
         setattr(cls, "source_paths", paths)
         setattr(cls, "options", options)
 
-        for key, val in options.iteritems():
+        for key, val in options.items():
             setattr(cls, key, val)
 
     def __getattr__(cls, name):
-        if not Options._Options__initialised: # pylint: disable-msg=W0212
-            cls.__initialise_class()
-            Options._Options__initialised = True # pylint: disable-msg=W0212
+        if not Options._Options__initialised:  # pylint: disable-msg=W0212
+            cls.__initialise_class()  # pylint: disable=no-value-for-parameter
+            Options._Options__initialised = True  # pylint: disable-msg=W0212
 
         if not hasattr(Options, name):
-            type.__setattr__(Options, name, [ None ])
+            type.__setattr__(Options, name, [None])
 
         return getattr(Options, name)
 
     def __setattr__(cls, name, value):
         # Substitut option names: --an-option-name for an_option_name
-        import re
         name = re.sub(r'^__', "", re.sub(r'-', "_", name))
         listvalue = []
 
@@ -102,9 +104,9 @@ class GsyncListOptionsType(type):
             if value:
                 listvalue = [] + value
             else:
-                listvalue = [ None ]
+                listvalue = [None]
         else:
-            listvalue = [ value ]
+            listvalue = [value]
 
         type.__setattr__(Options, name, listvalue)
 
@@ -117,7 +119,8 @@ class GsyncListOptions(object):
 class GsyncOptionsType(GsyncListOptionsType):
     """A type interface to the static GsyncOptions class."""
 
-    def list(cls):
+    @staticmethod
+    def list():
         """Interface for accessing options in list form."""
         return GsyncListOptions
 

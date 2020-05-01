@@ -3,8 +3,11 @@
 # Copyright (C) 2013 Craig Phillips.  All rights reserved.
 
 """GSync - RSync for Google Drive"""
+from __future__ import print_function
 
-import sys, os, logging
+import os
+import sys
+import logging
 
 try:
     import coverage
@@ -39,8 +42,8 @@ def main():
     if GsyncOptions.debug:
         debug.enable()
 
-    if not GsyncOptions.super and os.getuid() != 0 and \
-        (GsyncOptions.owner or GsyncOptions.group):
+    if (not GsyncOptions.super and os.getuid() != 0
+            and (GsyncOptions.owner or GsyncOptions.group)):
 
         print("Warning: Not running as root, file ownership may be ignored")
 
@@ -81,7 +84,7 @@ def main():
             debug("Creating crawler for: %s" % repr(src))
             Crawler(src, dest).run()
 
-    except BaseException, ex:
+    except BaseException as ex:
         debug.exception(ex)
         critical(ex)
         return 1

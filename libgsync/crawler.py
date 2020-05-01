@@ -7,8 +7,11 @@
 Crawler module which provides the interface for crawling local and remote
 file systems.
 """
+from __future__ import print_function
 
-import os, re, sys
+import os
+import re
+import sys
 from libgsync.sync import Sync
 from libgsync.output import verbose, debug
 from libgsync.options import GsyncOptions
@@ -42,7 +45,7 @@ class Crawler(object):
         self._src = None
         self._dst = None
         self._sync = None
-        
+
         force_dest_file = GsyncOptions.force_dest_file
 
         self._drive = Drive()
@@ -103,10 +106,10 @@ class Crawler(object):
             debug("force_dest_file = %s" % force_dest_file)
             GsyncOptions.force_dest_file = force_dest_file
 
-        #super(Crawler, self).__init__(name = "Crawler: %s" % src)
-    
+        # super(Crawler, self).__init__(name = "Crawler: %s" % src)
 
-    def _dev_check(self, device_id, path):
+    @staticmethod
+    def _dev_check(device_id, path):
         """
         Checks if the path provided resides on the device specified by the
         device ID provided.
@@ -124,7 +127,6 @@ class Crawler(object):
                 return False
 
         return True
-
 
     def _walk(self, path, generator, device_id):
         """
@@ -158,13 +160,12 @@ class Crawler(object):
                 absfile = os.path.join(dirpath, filename)
                 if not self._dev_check(device_id, absfile):
                     continue
-                    
+
                 debug("Synchronising file: %s" % repr(absfile))
                 self._sync(absfile)
 
             if not GsyncOptions.recursive:
                 break
-
 
     def run(self):
         """
@@ -192,11 +193,11 @@ class Crawler(object):
         try:
             self._walk(srcpath, self._walk_callback, self._dev)
 
-        except KeyboardInterrupt, ex:
+        except KeyboardInterrupt:
             print("\nInterrupted")
             raise
 
-        except Exception, ex:
+        except Exception as ex:
             debug.exception(ex)
             print("Error: %s" % repr(ex))
 
@@ -206,4 +207,3 @@ class Crawler(object):
                 self._sync.total_bytes_received,
                 self._sync.rate()
             ))
-

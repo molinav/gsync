@@ -7,35 +7,38 @@
 types.  Obvious types are local (system) and remote (Google drive) files.
 """
 
-import os, datetime, time, dateutil.parser, re
+import os
+import re
+import time
+from zlib import compress, decompress
+from base64 import b64encode, b64decode
+import dateutil.parser
 from dateutil.tz import tzutc
 
 # Provide support for Windows environments.
 try:
     import posix as os_platform
-except ImportError: # pragma: no cover
-    import nt as os_platform # pylint: disable-msg=F0401
-
-from zlib import compress, decompress
-from base64 import b64encode, b64decode
+except ImportError:  # pragma: no cover
+    import nt as os_platform  # pylint: disable-msg=F0401
 
 try:
     import cPickle as pickle
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     import pickle
 
-from libgsync.output import verbose, debug, itemize
+from libgsync.output import debug
 from libgsync.drive.mimetypes import MimeTypes
 from libgsync.options import GsyncOptions
+from libgsync.sync.file.factory import SyncFileFactory
 
 
-class EUnknownSourceType(Exception): # pragma: no cover
+class EUnknownSourceType(Exception):  # pragma: no cover
     """UnknownSourceType exception"""
 
     pass
 
 
-class EInvalidStatInfoType(Exception): # pragma: no cover
+class EInvalidStatInfoType(Exception):  # pragma: no cover
     """InvalidStatInfoType exception"""
 
     def __init__(self, stype):
@@ -52,7 +55,7 @@ class SyncFileInfoDatetime(object):
     __epoch = dateutil.parser.parse(
         "Thu, 01 Jan 1970 00:00:00 +0000",
         ignoretz=True
-    ).replace(tzinfo = tzutc())
+    ).replace(tzinfo=tzutc())
     __value = None
 
     def get_value(self):
@@ -60,15 +63,15 @@ class SyncFileInfoDatetime(object):
 
         return self.__value
 
-    def __native(self, d_obj):
+    @staticmethod
+    def __native(d_obj):
         if isinstance(d_obj, SyncFileInfoDatetime):
             return d_obj.get_value()
-        else:
-            return d_obj
+        return d_obj
 
     def __init__(self, datestring):
         d_obj = dateutil.parser.parse(datestring, ignoretz=True)
-        self.__value = d_obj.replace(tzinfo = tzutc())
+        self.__value = d_obj.replace(tzinfo=tzutc())
 
     def __getattr__(self, name):
         try:
@@ -86,7 +89,7 @@ class SyncFileInfoDatetime(object):
         delta = (self.__value - self.__epoch)
         try:
             return delta.total_seconds()
-        except AttributeError: # pragma: no cover
+        except AttributeError:  # pragma: no cover
             return (
                 delta.microseconds + (
                     delta.seconds + delta.days * 24 * 3600
@@ -97,7 +100,7 @@ class SyncFileInfoDatetime(object):
         return int(self.__secs())
 
     def __long__(self):
-        return long(self.__secs())
+        return int(self.__secs())
 
     def __float__(self):
         return float(self.__secs())
@@ -109,22 +112,22 @@ class SyncFileInfoDatetime(object):
         return int(self.__value) - self.__native(d_obj)
 
     def __lt__(self, d_obj):
-        return (self.__value < self.__native(d_obj))
+        return self.__value < self.__native(d_obj)
 
     def __le__(self, d_obj):
-        return (self.__value <= self.__native(d_obj))
+        return self.__value <= self.__native(d_obj)
 
     def __eq__(self, d_obj):
-        return (self.__value == self.__native(d_obj))
+        return self.__value == self.__native(d_obj)
 
     def __ne__(self, d_obj):
-        return (self.__value != self.__native(d_obj))
+        return self.__value != self.__native(d_obj)
 
     def __gt__(self, d_obj):
-        return (self.__value > self.__native(d_obj))
+        return self.__value > self.__native(d_obj)
 
     def __ge__(self, d_obj):
-        return (self.__value >= self.__native(d_obj))
+        return self.__value >= self.__native(d_obj)
 
 
 class SyncFileInfo(object):
@@ -158,7 +161,7 @@ class SyncFileInfo(object):
 
     def iteritems(self):
         """Interface method"""
-        return self._dict.iteritems()
+        return self._dict.items()
 
     def values(self):
         """Interface method"""
@@ -180,7 +183,7 @@ class SyncFileInfo(object):
             object.__setattr__(self, name, value)
             return
 
-        if name in [ "description", "statInfo" ]:
+        if name in ["description", "statInfo"]:
             self.set_stat_info(value)
             return
 
@@ -200,9 +203,9 @@ class SyncFileInfo(object):
     def __setitem__(self, name, value):
         raise AttributeError
 
-    def __repr__(self): # pragma: no cover
+    def __repr__(self):  # pragma: no cover
         return "SyncFileInfo(%s)" % ", ".join([
-            "%s = %s" % (repr(k), repr(v)) for k, v in self._dict.iteritems()
+            "%s = %s" % (repr(k), repr(v)) for k, v in self._dict.items()
         ])
 
     def set_stat_info(self, value):
@@ -213,7 +216,7 @@ class SyncFileInfo(object):
         if value is None:
             value = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
-        if isinstance(value, tuple) or isinstance(value, list):
+        if isinstance(value, (tuple, list)):
             value = os_platform.stat_result(tuple(value))
             self._dict['statInfo'] = value
             self._dict['description'] = \
@@ -241,7 +244,7 @@ class SyncFileInfo(object):
                     pickle.loads(decompress(b64decode(value)))
                 self._dict['description'] = value
                 return
-            except Exception, ex:
+            except Exception as ex:
                 debug("Base 64 decode failed: %s" % repr(ex))
 
             # That failed, try to decode using old hex encoding.
@@ -250,7 +253,7 @@ class SyncFileInfo(object):
                 self._dict['statInfo'] = pickle.loads(dvalue)
                 self._dict['description'] = value
                 return
-            except Exception, ex:
+            except Exception as ex:
                 debug("Hex decode failed: %s" % repr(ex))
 
             debug("Failed to decode string: %s" % repr(value))
@@ -294,7 +297,7 @@ class SyncFile(object):
     def __add__(self, path):
         return self.get_path(path)
 
-    def get_path(self, path = None):
+    def get_path(self, path=None):
         """Returns the path of the SyncFile instance, or the path joined
         with the path provided.
 
@@ -306,7 +309,7 @@ class SyncFile(object):
         debug("Joining: %s with %s" % (repr(self._path), repr(path)))
         return os.path.join(self._path, path)
 
-    def get_uploader(self, path = None): # pragma: no cover
+    def get_uploader(self, path=None):  # pragma: no cover
         """Returns the uploader (e.g. MediaUpload) for synchronisation.
 
         @param {str} path    Path to the file beneath this object
@@ -315,7 +318,7 @@ class SyncFile(object):
 
         raise NotImplementedError
 
-    def get_info(self, path = None): # pragma: no cover
+    def get_info(self, path=None):  # pragma: no cover
         """Returns information about the file
 
         @param {str} path    Path to the file beneath this object
@@ -324,39 +327,39 @@ class SyncFile(object):
 
         raise NotImplementedError
 
-    def _create_dir(self, path, src = None): # pragma: no cover
+    def _create_dir(self, path, src=None):  # pragma: no cover
         """Pure virtual function"""
         raise NotImplementedError
 
-    def _update_dir(self, path, src): # pragma: no cover
+    def _update_dir(self, path, src):  # pragma: no cover
         """Pure virtual function"""
         raise NotImplementedError
 
-    def _create_symlink(self, path, src): # pragma: no cover
+    def _create_symlink(self, path, src):  # pragma: no cover
         """Pure virtual function"""
         raise NotImplementedError
 
-    def _create_file(self, path, src): # pragma: no cover
+    def _create_file(self, path, src):  # pragma: no cover
         """Pure virtual function"""
         raise NotImplementedError
 
-    def _update_data(self, path, src): # pragma: no cover
+    def _update_data(self, path, src):  # pragma: no cover
         """Pure virtual function"""
         raise NotImplementedError
 
-    def _update_attrs(self, path, src, attrs): # pragma: no cover
+    def _update_attrs(self, path, src, attrs):  # pragma: no cover
         """Pure virtual function"""
         raise NotImplementedError
 
-    def __create_file(self, path, src = None):
+    def __create_file(self, path, src=None):
         self._create_file(path, src)
         self._update_data(path, src)
         self.__update_attrs(path, src)
 
-    def __create_symlink(self, path, src = None):
+    def __create_symlink(self, path, src=None):
         self._create_symlink(path, src)
 
-    def __create_dir(self, path, src = None):
+    def __create_dir(self, path, src=None):
         self._create_dir(path, src)
         self.__update_attrs(path, src)
 
@@ -399,8 +402,8 @@ class SyncFile(object):
 
         self._update_attrs(path, src, attrs)
 
-
-    def _normalise_source(self, src):
+    @staticmethod
+    def _normalise_source(src):
         """Normalises the source parameter, which can be one of:
 
         @param {SyncFile|str|SyncFileInfo} src
@@ -411,7 +414,6 @@ class SyncFile(object):
         debug("type(src) = %s" % type(src))
 
         if src is not None:
-            from libgsync.sync.file.factory import SyncFileFactory
 
             if isinstance(src, SyncFileInfo):
                 src_info = src
@@ -423,21 +425,20 @@ class SyncFile(object):
                 src_info = src.get_info()
                 src_path = src.get_path()
 
-            elif isinstance(src, str) or isinstance(src, unicode):
+            elif isinstance(src, (str, unicode)):
                 src_path = src
                 src_obj = SyncFileFactory.create(src_path)
                 src_info = src_obj.get_info()
 
             else:
                 raise EUnknownSourceType("%s is a %s" % (
-                    repr(src), type(src))
-                )
+                    repr(src), type(src)))
 
         debug("src_info = %s" % repr(src_info), 3)
 
         return (src_path, src_info, src_obj)
 
-    def create(self, path, src = None):
+    def create(self, path, src=None):
         """Creates a file at the designated path"""
 
         _, src_info, src_obj = self._normalise_source(src)
@@ -470,7 +471,8 @@ class SyncFile(object):
 
         self.__update_attrs(path, src_obj)
 
-    def normpath(self, path):
+    @staticmethod
+    def normpath(path):
         """Virtual method providing subclasses the ability to override it"""
 
         return os.path.normpath(path)
