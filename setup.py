@@ -22,9 +22,9 @@ setup(
     url='https://github.com/iwonbigbro/gsync',
     long_description=delim.join([
         "Gsync %s - %s" % (__version__, str(datetime.utcnow())),
-        open("README.rst").read(),
+        open("README.md").read(),
         "Change history",
-        open("CHANGELIST.rst").read()
+        open("CHANGELOG.md").read()
     ]),
     test_suite="tests",
     setup_requires=[
