@@ -15,6 +15,7 @@ try:
 except ImportError:
     pass
 
+import libgsync.drive
 from libgsync.options import GsyncOptions
 from libgsync.output import verbose, debug, critical
 from libgsync.crawler import Crawler
@@ -24,7 +25,6 @@ from libgsync.filter import Filter
 def authenticate():
     """Performs authentications and exits"""
 
-    import libgsync.drive
     with libgsync.drive.Drive().service():
         verbose("Authenticated")
         return 0
