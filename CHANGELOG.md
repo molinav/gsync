@@ -6,6 +6,8 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+## [0.1.16] - 2020-05-01
+
 ### Changed
 - Upgrade `CHANGELIST.rst` into `CHANGELOG.md` and use Markdown
 - Upgrade `README.rst` into `README.md` and use Markdown
@@ -115,6 +117,8 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Bug: Files get updated that are in Trash and do not get restored
 
 
+[0.1.16]:
+https://github.com/molinav/gsync/compare/v0.1.15...v0.1.16
 [0.1.15]:
 https://github.com/molinav/gsync/compare/759d7dc9...v0.1.15
 [0.1.14]:
