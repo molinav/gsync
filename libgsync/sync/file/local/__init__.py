@@ -64,9 +64,9 @@ class SyncFileLocal(SyncFile):
                 title=filename,
                 modifiedDate=datetime.datetime.utcfromtimestamp(
                     st_info.st_mtime
-                    #).isoformat(),
-                    #).replace(tzinfo=tzutc()).isoformat(),
-                    ).replace(tzinfo=tzutc()).strftime("%Y-%m-%dT%H:%M:%S.%f%z"),
+                    # ).isoformat(),
+                    # ).replace(tzinfo=tzutc()).isoformat(),
+                ).replace(tzinfo=tzutc()).strftime("%Y-%m-%dT%H:%M:%S.%f%z"),
                 mimeType=mimetype,
                 description=st_info,
                 fileSize=st_info.st_size,
@@ -153,8 +153,8 @@ class SyncFileLocal(SyncFile):
         debug("Creating local symlink: %s" % repr(path))
 
         if not GsyncOptions.dry_run:
-            #link_source = src.
-            #os.symlink(, path)
+            # link_source = src.
+            # os.symlink(, path)
             pass
 
     def _create_file(self, path, src):

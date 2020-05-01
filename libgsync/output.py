@@ -16,8 +16,8 @@ import traceback
 from libgsync import __version__
 
 # Make stdout unbuffered.
-sys.stdout = (codecs.getwriter(sys.stdout.encoding))\
-    (os.fdopen(sys.stdout.fileno(), "w", 0), "replace")
+WRITER = codecs.getwriter(sys.stdout.encoding)
+sys.stdout = WRITER(os.fdopen(sys.stdout.fileno(), "w", 0), "replace")
 
 
 class Channel(object):
@@ -131,8 +131,8 @@ class Itemize(object):
     summary on stdout and stderr.
     """
     def __call__(self, changes, filename):
-        sys.stdout.write(u"%11s %s\n" % \
-            (unicode(changes[:11]), unicode(filename)))
+        sys.stdout.write(u"%11s %s\n" %
+                         (unicode(changes[:11]), unicode(filename)))
 
 
 class Progress(object):
@@ -189,6 +189,7 @@ class Progress(object):
             if rate < 1024.0:
                 return "%3.2f%s/s" % (rate, modifier)
             rate /= 1024.0
+        raise NotImplementedError
 
     def complete(self, bytes_written):
         """

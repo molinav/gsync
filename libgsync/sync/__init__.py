@@ -81,10 +81,8 @@ class SyncRules(object):
         if not self.skip_mimetype():
             return False
 
-        return bool(
-            (GsyncOptions.size_only or self.skip_mtime()) and \
-            self.skip_size()
-        )
+        return bool((GsyncOptions.size_only or self.skip_mtime())
+                    and self.skip_size())
 
     @debug.function
     def skip_mtime(self):
@@ -324,6 +322,8 @@ class Sync(object):
         finally:
             self.total_bytes_sent += self.dst.bytes_written
             self.total_bytes_received += self.dst.bytes_read
+
+        return None
 
     def rate(self):
         """Returns the data transfer rate of the synchronisation"""

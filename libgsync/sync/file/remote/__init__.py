@@ -98,8 +98,8 @@ class SyncFileRemote(SyncFile):
         debug("Creating remote symlink: %s" % repr(path))
 
         if not GsyncOptions.dry_run:
-            #link_source = src.
-            #os.symlink(, path)
+            # link_source = src.
+            # os.symlink(, path)
             pass
 
     def _create_file(self, path, src):
@@ -175,9 +175,10 @@ class SyncFileRemote(SyncFile):
         info.set_stat_info(st_info)
 
         mtime_utc = datetime.datetime.utcfromtimestamp(
-            #attrs.mtime).isoformat()
-            #attrs.mtime).replace(tzinfo=tzutc()).isoformat()
-            attrs.mtime).replace(tzinfo=tzutc()).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
+            # attrs.mtime).isoformat()
+            # attrs.mtime).replace(tzinfo=tzutc()).isoformat()
+            attrs.mtime).replace(tzinfo=tzutc()).strftime(
+                "%Y-%m-%dT%H:%M:%S.%f%z")
 
         Drive().update(path, properties={
             'description': info.description,

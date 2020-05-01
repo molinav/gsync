@@ -106,7 +106,7 @@ class Crawler(object):
             debug("force_dest_file = %s" % force_dest_file)
             GsyncOptions.force_dest_file = force_dest_file
 
-        #super(Crawler, self).__init__(name = "Crawler: %s" % src)
+        # super(Crawler, self).__init__(name = "Crawler: %s" % src)
 
     @staticmethod
     def _dev_check(device_id, path):

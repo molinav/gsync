@@ -216,7 +216,7 @@ class SyncFileInfo(object):
         if value is None:
             value = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
-        if isinstance(value, tuple) or isinstance(value, list):
+        if isinstance(value, (tuple, list)):
             value = os_platform.stat_result(tuple(value))
             self._dict['statInfo'] = value
             self._dict['description'] = \
@@ -425,7 +425,7 @@ class SyncFile(object):
                 src_info = src.get_info()
                 src_path = src.get_path()
 
-            elif isinstance(src, str) or isinstance(src, unicode):
+            elif isinstance(src, (str, unicode)):
                 src_path = src
                 src_obj = SyncFileFactory.create(src_path)
                 src_info = src_obj.get_info()

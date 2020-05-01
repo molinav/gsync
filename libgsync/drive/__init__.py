@@ -83,8 +83,10 @@ class DriveFileObject(object):
         self.closed = False
         self.description = ""
         # https://github.com/iwonbigbro/gsync/issues/73
-        #self.modified_date = datetime.datetime.now().replace(tzinfo=tzutc()).isoformat()
-        self.modified_date = datetime.datetime.now().replace(tzinfo=tzutc()).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
+        # self.modified_date = datetime.datetime.now().replace(
+        #     tzinfo=tzutc()).isoformat()
+        self.modified_date = datetime.datetime.now().replace(
+            tzinfo=tzutc()).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
 
         # Private
         drive = Drive()
@@ -366,7 +368,7 @@ class Drive(object):
 
         debug("Authenticating")
 
-        #if debug.enabled(): httplib2.debuglevel = 4
+        # if debug.enabled(): httplib2.debuglevel = 4
 
         http = credentials.authorize(
             httplib2.Http(cache=self._get_config_dir("http_cache"))
