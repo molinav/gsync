@@ -15,9 +15,14 @@ from datetime import datetime
 import traceback
 from libgsync import __version__
 
+try:
+    unicode("")
+except NameError:
+    unicode = str
+
 # Make stdout unbuffered.
 WRITER = codecs.getwriter(sys.stdout.encoding)
-sys.stdout = WRITER(os.fdopen(sys.stdout.fileno(), "w", 0), "replace")
+sys.stdout = WRITER(os.fdopen(sys.stdout.fileno(), "wb", 0), "replace")
 
 
 class Channel(object):

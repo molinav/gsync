@@ -34,6 +34,10 @@ if debug.enabled():  # pragma: no cover
     import logging
     logging.getLogger().setLevel(logging.DEBUG)
 
+try:
+    unicode("")
+except NameError:
+    unicode = str
 
 oauth2client.util.positional_parameters_enforcement = \
     oauth2client.util.POSITIONAL_IGNORE
