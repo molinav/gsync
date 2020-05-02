@@ -245,7 +245,6 @@ class DriveFileObject(object):
 
         Currently not supported by Google Drive API.
         """
-        data = data  # static_cast<void>(data) for pylint
         self._required_open()
         self._required_modes(["w", "a"])
 
