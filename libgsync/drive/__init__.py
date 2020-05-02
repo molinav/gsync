@@ -13,6 +13,7 @@ import json
 import datetime
 import inspect
 from contextlib import contextmanager
+import six
 from dateutil.tz import tzutc
 import httplib2
 import retrying
@@ -33,10 +34,6 @@ if debug.enabled():  # pragma: no cover
     import logging
     logging.getLogger().setLevel(logging.DEBUG)
 
-try:
-    input = raw_input  # pylint: disable=redefined-builtin,invalid-name
-except NameError:
-    pass
 
 oauth2client.util.positional_parameters_enforcement = \
     oauth2client.util.POSITIONAL_IGNORE
@@ -497,7 +494,7 @@ class Drive(object):
 
         code = ""
         while not code:
-            code = input("Type in the received code: ")
+            code = six.moves.input("Type in the received code: ")
 
         credentials = flow.step2_exchange(code)
         if credentials is None:
