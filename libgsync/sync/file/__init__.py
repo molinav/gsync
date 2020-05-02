@@ -31,6 +31,11 @@ from libgsync.drive.mimetypes import MimeTypes
 from libgsync.options import GsyncOptions
 from libgsync.sync.file.factory import SyncFileFactory
 
+try:
+    unicode("")
+except NameError:
+    unicode = str
+
 
 class EUnknownSourceType(Exception):  # pragma: no cover
     """UnknownSourceType exception"""
