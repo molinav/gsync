@@ -31,6 +31,7 @@ setup(
         'setuptools',
     ],
     install_requires=[
+        'six >= 1.10.0',
         'docopt >= 0.6.0',
         'google-api-python-client >= 1.2, < 1.5.0',
         'httplib2 >= 0.8, < 0.16.0',
