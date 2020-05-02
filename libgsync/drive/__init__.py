@@ -9,15 +9,11 @@ from __future__ import print_function
 import os
 import re
 import sys
+import json
 import datetime
 import inspect
 from contextlib import contextmanager
 from dateutil.tz import tzutc
-
-try:
-    import simplejson as json
-except ImportError:  # pragma: no cover
-    import json
 import httplib2
 import retrying
 import oauth2client.util
