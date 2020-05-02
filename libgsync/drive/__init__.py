@@ -311,7 +311,7 @@ class Drive(object):
         # First see if we need to decode it...
         strval_unicode = None
 
-        if not isinstance(strval, basestring):
+        if not isinstance(strval, six.string_types):
             strval = unicode(str(strval))
 
         if isinstance(strval, unicode):
