@@ -22,7 +22,7 @@ except NameError:
 
 # Make stdout unbuffered.
 WRITER = codecs.getwriter(sys.stdout.encoding)
-sys.stdout = WRITER(os.fdopen(sys.stdout.fileno(), "w", 0), "replace")
+sys.stdout = WRITER(os.fdopen(sys.stdout.fileno(), "wb", 0), "replace")
 
 
 class Channel(object):
