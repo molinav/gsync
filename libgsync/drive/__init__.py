@@ -9,15 +9,12 @@ from __future__ import print_function
 import os
 import re
 import sys
+import json
 import datetime
 import inspect
 from contextlib import contextmanager
+import six
 from dateutil.tz import tzutc
-
-try:
-    import simplejson as json
-except ImportError:  # pragma: no cover
-    import json
 import httplib2
 import retrying
 import oauth2client.util
@@ -37,10 +34,6 @@ if debug.enabled():  # pragma: no cover
     import logging
     logging.getLogger().setLevel(logging.DEBUG)
 
-try:
-    input = raw_input  # pylint: disable=redefined-builtin,invalid-name
-except NameError:
-    pass
 
 oauth2client.util.positional_parameters_enforcement = \
     oauth2client.util.POSITIONAL_IGNORE
@@ -249,7 +242,6 @@ class DriveFileObject(object):
 
         Currently not supported by Google Drive API.
         """
-        data = data  # static_cast<void>(data) for pylint
         self._required_open()
         self._required_modes(["w", "a"])
 
@@ -319,7 +311,7 @@ class Drive(object):
         # First see if we need to decode it...
         strval_unicode = None
 
-        if not isinstance(strval, basestring):
+        if not isinstance(strval, six.string_types):
             strval = unicode(str(strval))
 
         if isinstance(strval, unicode):
@@ -502,7 +494,7 @@ class Drive(object):
 
         code = ""
         while not code:
-            code = input("Type in the received code: ")
+            code = six.moves.input("Type in the received code: ")
 
         credentials = flow.step2_exchange(code)
         if credentials is None:
