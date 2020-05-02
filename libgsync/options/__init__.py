@@ -56,6 +56,7 @@ So this actually means that GsyncOptions is actually a static proxy class...
 __all__ = ["GsyncOptions"]
 
 import re
+import six
 from docopt import docopt
 from libgsync.options import doc
 from libgsync import __version__
@@ -111,11 +112,6 @@ class GsyncListOptionsType(type):
         type.__setattr__(Options, name, listvalue)
 
 
-class GsyncListOptions(object):
-    """Static interface to options as lists."""
-    __metaclass__ = GsyncListOptionsType
-
-
 class GsyncOptionsType(GsyncListOptionsType):
     """A type interface to the static GsyncOptions class."""
 
@@ -128,6 +124,13 @@ class GsyncOptionsType(GsyncListOptionsType):
         return getattr(GsyncListOptions, name)[-1]
 
 
+@six.add_metaclass(GsyncOptionsType)
 class GsyncOptions(object):
     """A singlton abstract proxy class for accessing options."""
-    __metaclass__ = GsyncOptionsType
+    pass
+
+
+@six.add_metaclass(GsyncListOptionsType)
+class GsyncListOptions(object):
+    """Static interface to options as lists."""
+    pass
