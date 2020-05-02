@@ -3,9 +3,9 @@
 # Copyright (C) 2014 Craig Phillips.  All rights reserved.
 
 import unittest, tempfile, sys, os, shutil
+import hashlib
 import libgsync.options
 import libgsync.sync
-import libgsync.hashlib as hashlib
 
 try: import posix as os_platform
 except ImportError: import nt as os_platform

@@ -47,8 +47,6 @@ setup(
         'libgsync.options',
         'libgsync.sync',
         'libgsync.sync.file',
-        'libgsync.sync.file.local',
-        'libgsync.sync.file.remote',
     ],
     scripts=[
         'bin/gsync',
