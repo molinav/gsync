@@ -386,6 +386,8 @@ class Drive(object):
         if res.status in [200, 202]:
             # API expires every minute.
             apistr = content
+            if six.PY3:
+                apistr = apistr.decode("utf-8")
 
         if not apistr:
             raise NoServiceError
