@@ -128,7 +128,7 @@ class SyncFileLocal(SyncFile):
         try:
             md5_gen = hashlib.new("md5")
 
-            with open(path, "r") as fd:
+            with open(path, "rb") as fd:
                 # Read the file in 1K chunks to avoid memory consumption
                 while True:
                     chunk = fd.read(1024)
