@@ -190,7 +190,7 @@ class SyncFileLocal(SyncFile):
 
         try:
             if not GsyncOptions.dry_run:
-                fd = open(path, "w")
+                fd = open(path, "wb")
 
             progress = Progress(GsyncOptions.progress)
 
