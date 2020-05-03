@@ -883,6 +883,13 @@ class Drive(object):
             debug(" * with: %s = %s" % (repr(key), repr(val)))
             setattr(info, key, Drive.utf8(val))
 
+        # In Python 3, convert any bytes object to str before sending the
+        # request through the Google Drive API.
+        if six.PY3:
+            for key in info.keys():
+                if isinstance(info[key], bytes):
+                    info[key] = info[key].decode("utf-8")
+
         with self.service() as service:
             res = None
             req = service.files().update(
