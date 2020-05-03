@@ -6,6 +6,10 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Fixed
+- Fix handling of `SyncFileInfoDatetime` and `int` by `Drive.unicode`
+- Bug [#12]: `TypeError` when `gsync` uploads a file on Python3
+
 ## [0.2.0] - 2020-05-03
 
 ### Added
@@ -172,6 +176,9 @@ https://github.com/iwonbigbro/gsync/compare/5abf8886...50dea079
 [0.1.0]:
 https://github.com/iwonbigbro/gsync/commit/5abf8886
 
+
+[#12]:
+https://github.com/molinav/gsync/issues/12
 [#9]:
 https://github.com/molinav/gsync/issues/9
 [#6]:

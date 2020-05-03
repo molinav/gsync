@@ -316,7 +316,12 @@ class Drive(object):
         strval_unicode = None
 
         if not isinstance(strval, six.string_types):
-            strval = unicode(bytes(strval))
+            try:
+                if isinstance(strval, int):
+                    raise TypeError
+                strval = unicode(bytes(strval))
+            except (TypeError, ValueError):
+                strval = unicode(str(strval))
 
         if isinstance(strval, unicode):
             strval_unicode = strval
