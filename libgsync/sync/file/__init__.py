@@ -225,15 +225,19 @@ class SyncFileInfo(object):
         if isinstance(value, (tuple, list)):
             value = os_platform.stat_result(tuple(value))
             self._dict['statInfo'] = value
-            self._dict['description'] = \
-                b64encode(compress(pickle.dumps(value)))
+            description = b64encode(compress(pickle.dumps(value)))
+            if six.PY3:
+                description = description.decode("utf-8")
+            self._dict['description'] = description
 
             return
 
         if isinstance(value, os_platform.stat_result):
             try:
-                self._dict['description'] = \
-                    b64encode(compress(pickle.dumps(value)))
+                description = b64encode(compress(pickle.dumps(value)))
+                if six.PY3:
+                    description = description.decode("utf-8")
+                self._dict['description'] = description
                 self._dict['statInfo'] = value
             except pickle.PicklingError:
                 pass
