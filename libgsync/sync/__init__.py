@@ -34,7 +34,7 @@ class SyncRules(object):
         self.src_file = src_file
         self.dst_file = dst_file
         self.sync_type = sync_type
-        self.changes = bytearray("           ")
+        self.changes = bytearray(b"           ")
         self.action = NOCHANGE
 
         if GsyncOptions.force_dest_file:
@@ -104,10 +104,10 @@ class SyncRules(object):
         """Skip files that match in size"""
 
         if self.src_file.fileSize != self.dst_file.fileSize:
-            self.changes[3] = 's'
+            self.changes[3] = ord('s')
             return False
 
-        self.changes[3] = '.'
+        self.changes[3] = ord('.')
         return True
 
     @debug.function
@@ -118,10 +118,10 @@ class SyncRules(object):
             return False
 
         if self.src_file.md5Checksum != self.dst_file.md5Checksum:
-            self.changes[2] = 'c'
+            self.changes[2] = ord('c')
             return False
 
-        self.changes[2] = '.'
+        self.changes[2] = ord('.')
         return True
 
     @debug.function
@@ -165,11 +165,11 @@ class SyncRules(object):
             return True
 
         if self.dst_file is None:
-            self.changes = bytearray("cf+++++++++")
+            self.changes = bytearray(b"cf+++++++++")
             self.action |= CREATE
 
             if self.is_dir:
-                self.changes[1] = 'd'
+                self.changes[1] = ord('d')
 
             return True
 
@@ -183,28 +183,28 @@ class SyncRules(object):
             self.action |= UPDATE_ATTRS
 
             if GsyncOptions.times:
-                self.changes[4] = 't'
+                self.changes[4] = ord('t')
             else:
-                self.changes[4] = 'T'
+                self.changes[4] = ord('T')
 
         src_st, dst_st = self.src_file.statInfo, self.dst_file.statInfo
 
         if src_st and dst_st:
             if GsyncOptions.perms and dst_st.st_mode != src_st.st_mode:
                 self.action |= UPDATE_ATTRS
-                self.changes[5] = 'p'
+                self.changes[5] = ord('p')
 
             if GsyncOptions.owner and dst_st.st_uid != src_st.st_uid:
                 self.action |= UPDATE_ATTRS
-                self.changes[6] = 'o'
+                self.changes[6] = ord('o')
 
             if GsyncOptions.group and dst_st.st_gid != src_st.st_gid:
                 self.action |= UPDATE_ATTRS
-                self.changes[7] = 'g'
+                self.changes[7] = ord('g')
 
             # Rsync also provides support for these:
-            #     Check acl = self.changes[9] = 'a'
-            #     Check extended attributes = self.changes[10] = 'x'
+            #     Check acl = self.changes[9] = ord('a')
+            #     Check extended attributes = self.changes[10] = ord('x')
 
     def _apply_skip_update(self):
         """Apply skips that are only applicable to data updates"""
@@ -231,7 +231,7 @@ class SyncRules(object):
         self.action = NOCHANGE
 
         if not self._apply_skip_create():
-            self.changes = bytearray("...........")
+            self.changes = bytearray(b"...........")
 
             self._apply_update_attrs()
 
@@ -239,7 +239,7 @@ class SyncRules(object):
                 self.action |= UPDATE_DATA
 
         if self.action & (CREATE | UPDATE_DATA):
-            self.changes[0] = self.sync_type
+            self.changes[0] = ord(self.sync_type)
 
         return self.action, self.changes
 

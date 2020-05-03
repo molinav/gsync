@@ -12,6 +12,7 @@ import re
 import time
 from zlib import compress, decompress
 from base64 import b64encode, b64decode
+import six
 import dateutil.parser
 from dateutil.tz import tzutc
 
@@ -240,13 +241,17 @@ class SyncFileInfo(object):
             return
 
         if isinstance(value, unicode):
-            value = unicode(value).encode("utf8")
+            value = unicode(value).encode()
 
-        if isinstance(value, str):
+        if isinstance(value, bytes):
             # First decode using new base64 compressed method.
             try:
+                content = decompress(b64decode(value))
+                if six.PY3:
+                    content = content.replace(b"_make_", b"")
+                    value = value.decode("utf-8")
                 self._dict['statInfo'] = \
-                    pickle.loads(decompress(b64decode(value)))
+                    pickle.loads(content)
                 self._dict['description'] = value
                 return
             except Exception as ex:
@@ -254,7 +259,7 @@ class SyncFileInfo(object):
 
             # That failed, try to decode using old hex encoding.
             try:
-                dvalue = str(value).decode("hex")
+                dvalue = bytes(value).decode("hex")
                 self._dict['statInfo'] = pickle.loads(dvalue)
                 self._dict['description'] = value
                 return
