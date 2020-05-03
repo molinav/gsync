@@ -9,6 +9,7 @@ types.  Obvious types are local (system) and remote (Google drive) files.
 
 import os
 import re
+import six
 import time
 from zlib import compress, decompress
 from base64 import b64encode, b64decode
@@ -240,9 +241,9 @@ class SyncFileInfo(object):
             return
 
         if isinstance(value, unicode):
-            value = unicode(value).encode("utf8")
+            value = unicode(value).encode()
 
-        if isinstance(value, str):
+        if isinstance(value, bytes):
             # First decode using new base64 compressed method.
             try:
                 self._dict['statInfo'] = \
@@ -254,7 +255,7 @@ class SyncFileInfo(object):
 
             # That failed, try to decode using old hex encoding.
             try:
-                dvalue = str(value).decode("hex")
+                dvalue = bytes(value).decode("hex")
                 self._dict['statInfo'] = pickle.loads(dvalue)
                 self._dict['description'] = value
                 return
