@@ -6,6 +6,28 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+## [0.2.0] - 2020-05-03
+
+### Added
+- Include `six` as a library dependency
+- Include the protocol used by `pickle` explicitly
+
+### Changed
+- Replace problematic Python2 syntax (e.g. `__metaclass__`, `raw_input`,
+  `basestring`, `unicode`, `str`, `iteritems`) with equivalent expressions
+  that use `six`
+- Modify handling of streams (`str`, `bytes`) for future compatibility
+  with Python3
+
+### Fixed
+- Bug [#1]: Remove `basestring` from code
+- Bug [#6]: `GsyncOptions` throws `AttributeError` in Python3
+- Bug [#9]: Cannot `gsync` with Python2 if `gsync` was used with Python3
+
+### Removed
+- `libgsync.hashlib` subpackage
+- `simplejson` support
+
 ## [0.1.16] - 2020-05-01
 
 ### Changed
@@ -117,6 +139,8 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Bug: Files get updated that are in Trash and do not get restored
 
 
+[0.2.0]:
+https://github.com/molinav/gsync/compare/v0.1.16...v0.2.0
 [0.1.16]:
 https://github.com/molinav/gsync/compare/v0.1.15...v0.1.16
 [0.1.15]:
@@ -148,6 +172,12 @@ https://github.com/iwonbigbro/gsync/compare/5abf8886...50dea079
 [0.1.0]:
 https://github.com/iwonbigbro/gsync/commit/5abf8886
 
+[#9]:
+https://github.com/molinav/gsync/issues/9
+[#6]:
+https://github.com/molinav/gsync/issues/6
+[#1]:
+https://github.com/molinav/gsync/issues/1
 [#33]:
 https://github.com/iwonbigbro/gsync/issues/33
 [#32]:
