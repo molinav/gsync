@@ -850,6 +850,13 @@ class Drive(object):
         if parent_id:
             body['parents'] = [{'id': parent_id}]
 
+        # In Python 3, convert any bytes object to str before sending the
+        # request through the Google Drive API.
+        if six.PY3:
+            for key in body.keys():
+                if isinstance(body[key], bytes):
+                    body[key] = body[key].decode("utf-8")
+
         debug(" * trying...")
         with self.service() as service:
             ent = service.files().insert(
