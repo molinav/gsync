@@ -9,10 +9,10 @@ types.  Obvious types are local (system) and remote (Google drive) files.
 
 import os
 import re
-import six
 import time
 from zlib import compress, decompress
 from base64 import b64encode, b64decode
+import six
 import dateutil.parser
 from dateutil.tz import tzutc
 
