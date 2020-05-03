@@ -246,8 +246,12 @@ class SyncFileInfo(object):
         if isinstance(value, bytes):
             # First decode using new base64 compressed method.
             try:
+                content = decompress(b64decode(value))
+                if six.PY3:
+                    content = content.replace(b"_make_", b"")
+                    value = value.decode("utf-8")
                 self._dict['statInfo'] = \
-                    pickle.loads(decompress(b64decode(value)))
+                    pickle.loads(content)
                 self._dict['description'] = value
                 return
             except Exception as ex:
