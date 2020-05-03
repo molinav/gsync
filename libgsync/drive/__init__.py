@@ -258,7 +258,7 @@ class DrivePathCache(object):
         self.__data = {}
 
         if data is not None:
-            for key, val in data.iteritems():
+            for key, val in six.iteritems(data):
                 path = Drive().normpath(key)
                 if path is None or not isinstance(val, dict):
                     continue
@@ -833,7 +833,7 @@ class Drive(object):
 
         debug(" * merging properties...")
         body = {}
-        for key, val in properties.iteritems():
+        for key, val in six.iteritems(properties):
             if val is not None:
                 body[key] = Drive.utf8(val)
 
@@ -873,7 +873,7 @@ class Drive(object):
         debug("Updating: %s" % repr(path))
 
         # Merge properties
-        for key, val in properties.iteritems():
+        for key, val in six.iteritems(properties):
             # Do not update the ID, always use the path obtained ID.
             if key == 'id':
                 continue
