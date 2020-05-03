@@ -6,10 +6,14 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Changed
+- Apply minor linting corrections
+
 ### Fixed
-- Fix handling of `SyncFileInfoDatetime` and `int` by `Drive.unicode`
 - Bug [#12]: `TypeError` when `gsync` uploads a file on Python3
 - Bug [#14]: `TypeError` when `gsync` downloads a file on Python3
+- Fix handling of `SyncFileInfoDatetime` and `int` by `Drive.unicode`
+- Fix file opening mode inside MD5 checksum function
 
 ## [0.2.0] - 2020-05-03
 
