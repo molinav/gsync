@@ -6,6 +6,10 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Fixed
+- Fix handling of `SyncFileInfoDatetime` and `int` by `Drive.unicode`
+- Bug [#12]: `TypeError` when `gsync` uploads a file on Python3
+
 ## [0.2.0] - 2020-05-03
 
 ### Added
@@ -45,13 +49,13 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [0.1.14] - 2013-10-23
 
 ### Added
-- Feature [#33]: Option to change the default dir config files (`.gsync` and
+- Feature [##33]: Option to change the default dir config files (`.gsync` and
   `client.json`) 
 
 ## [0.1.13] - 2013-10-21
 
 ### Fixed
-- Bug [#32]: `MemoryError()` with the checksum option with large files
+- Bug [##32]: `MemoryError()` with the checksum option with large files
 
 ## [0.1.10] - 2013-10-19
 
@@ -59,7 +63,7 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Add new filter module for future implementation of `rsync` filters
 
 ### Fixed
-- Bug [#31]: Files being reported out of date when they are not
+- Bug [##31]: Files being reported out of date when they are not
 
 ## [0.1.9] - 2013-10-17
 
@@ -70,27 +74,27 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [0.1.8] - 2013-10-16
 
 ### Fixed
-- Bug [#25]: Transfer Stats
-- Bug [#26]: Error: `TypeError('a float is required',)`
+- Bug [##25]: Transfer Stats
+- Bug [##26]: Error: `TypeError('a float is required',)`
 
 ## [0.1.7] - 2013-10-16
 
 ### Fixed
-- Bug [#29]: `OSError('No such file or directory: h')`
+- Bug [##29]: `OSError('No such file or directory: h')`
 
 ## [0.1.6] - 2013-10-16
 
 ### Fixed
-- Bug [#27]: Error: `TypeError('a float is required',)`
-- Bug [#28]: Command line arguments are not repeatable: e.g. `--filter`
+- Bug [##27]: Error: `TypeError('a float is required',)`
+- Bug [##28]: Command line arguments are not repeatable: e.g. `--filter`
 
 ## [0.1.5] - 2013-10-09
 
 ### Added
-- Feature [#12]: Implement `--checksum` option
+- Feature [##12]: Implement `--checksum` option
 
 ### Fixed
-- Bug [#22]: Modification time is not being set to match the source
+- Bug [##22]: Modification time is not being set to match the source
   file modification time when used with `--times` 
 
 ## [0.1.4] - 2013-10-04
@@ -99,25 +103,25 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `setuptools` used in place of `distutils`, meaning easier installation
 
 ### Fixed
-- Bug [#19]: Latin-1 file names are not supported and throw exceptions
+- Bug [##19]: Latin-1 file names are not supported and throw exceptions
 
 ## [0.1.3] - 2013-10-01
 
 ### Fixed
-- Bug [#17] and [#18]: Does not obey `--recursive` option anymore
-- Bug [#16]: Error: `__init__() takes at least 5 arguments (4 given)`
+- Bug [##17] and [##18]: Does not obey `--recursive` option anymore
+- Bug [##16]: Error: `__init__() takes at least 5 arguments (4 given)`
 
 ## [0.1.2] - 2013-10-01
 
 ### Fixed
-- Bug [#15]: Specifying source and/or destination files results in creation
+- Bug [##15]: Specifying source and/or destination files results in creation
   of directories where there should be files, on the client or server
 
 ## [0.1.1] - 2013-09-30
 
 ### Fixed
-- Bug [#13]: Specifying a file to copy instead of a directory does nothing
-- Bug [#14]: Attempted install on a 'Python Fresh' machine
+- Bug [##13]: Specifying a file to copy instead of a directory does nothing
+- Bug [##14]: Attempted install on a 'Python Fresh' machine
 
 ## [0.1.0] - 2013-09-01
 
@@ -172,43 +176,46 @@ https://github.com/iwonbigbro/gsync/compare/5abf8886...50dea079
 [0.1.0]:
 https://github.com/iwonbigbro/gsync/commit/5abf8886
 
+
+[#12]:
+https://github.com/molinav/gsync/issues/12
 [#9]:
 https://github.com/molinav/gsync/issues/9
 [#6]:
 https://github.com/molinav/gsync/issues/6
 [#1]:
 https://github.com/molinav/gsync/issues/1
-[#33]:
+[##33]:
 https://github.com/iwonbigbro/gsync/issues/33
-[#32]:
+[##32]:
 https://github.com/iwonbigbro/gsync/issues/32
-[#31]:
+[##31]:
 https://github.com/iwonbigbro/gsync/issues/31
-[#29]:
+[##29]:
 https://github.com/iwonbigbro/gsync/issues/29
-[#28]:
+[##28]:
 https://github.com/iwonbigbro/gsync/issues/28
-[#27]:
+[##27]:
 https://github.com/iwonbigbro/gsync/issues/27
-[#26]:
+[##26]:
 https://github.com/iwonbigbro/gsync/issues/26
-[#25]:
+[##25]:
 https://github.com/iwonbigbro/gsync/issues/25
-[#22]:
+[##22]:
 https://github.com/iwonbigbro/gsync/issues/22
-[#19]:
+[##19]:
 https://github.com/iwonbigbro/gsync/issues/19
-[#18]:
+[##18]:
 https://github.com/iwonbigbro/gsync/issues/18
-[#17]:
+[##17]:
 https://github.com/iwonbigbro/gsync/issues/17
-[#16]:
+[##16]:
 https://github.com/iwonbigbro/gsync/issues/16
-[#15]:
+[##15]:
 https://github.com/iwonbigbro/gsync/issues/15
-[#14]:
+[##14]:
 https://github.com/iwonbigbro/gsync/issues/14
-[#13]:
+[##13]:
 https://github.com/iwonbigbro/gsync/issues/13
-[#12]:
+[##12]:
 https://github.com/iwonbigbro/gsync/issues/12

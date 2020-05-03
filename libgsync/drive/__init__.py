@@ -316,7 +316,12 @@ class Drive(object):
         strval_unicode = None
 
         if not isinstance(strval, six.string_types):
-            strval = unicode(bytes(strval))
+            try:
+                if isinstance(strval, int):
+                    raise TypeError
+                strval = unicode(bytes(strval))
+            except (TypeError, ValueError):
+                strval = unicode(str(strval))
 
         if isinstance(strval, unicode):
             strval_unicode = strval
@@ -844,6 +849,13 @@ class Drive(object):
 
         if parent_id:
             body['parents'] = [{'id': parent_id}]
+
+        # In Python 3, convert any bytes object to str before sending the
+        # request through the Google Drive API.
+        if six.PY3:
+            for key in body.keys():
+                if isinstance(body[key], bytes):
+                    body[key] = body[key].decode("utf-8")
 
         debug(" * trying...")
         with self.service() as service:
