@@ -35,6 +35,7 @@ from libgsync.sync.file.factory import SyncFileFactory
 try:
     unicode("")
 except NameError:
+    # pylint: disable=invalid-name,redefined-builtin
     unicode = str
 
 

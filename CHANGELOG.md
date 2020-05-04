@@ -6,10 +6,16 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+## [0.2.1] - 2020-05-04
+
+### Changed
+- Apply minor linting corrections
+
 ### Fixed
-- Fix handling of `SyncFileInfoDatetime` and `int` by `Drive.unicode`
 - Bug [#12]: `TypeError` when `gsync` uploads a file on Python3
 - Bug [#14]: `TypeError` when `gsync` downloads a file on Python3
+- Fix handling of `SyncFileInfoDatetime` and `int` by `Drive.unicode`
+- Fix file opening mode inside MD5 checksum function
 
 ## [0.2.0] - 2020-05-03
 
@@ -144,6 +150,8 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Bug: Files get updated that are in Trash and do not get restored
 
 
+[0.2.1]:
+https://github.com/molinav/gsync/compare/v0.2.0...v0.2.1
 [0.2.0]:
 https://github.com/molinav/gsync/compare/v0.1.16...v0.2.0
 [0.1.16]:

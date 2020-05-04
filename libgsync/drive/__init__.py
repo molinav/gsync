@@ -37,6 +37,7 @@ if debug.enabled():  # pragma: no cover
 try:
     unicode("")
 except NameError:
+    # pylint: disable=invalid-name,redefined-builtin
     unicode = str
 
 oauth2client.util.positional_parameters_enforcement = \
@@ -59,7 +60,7 @@ class ExchangeError(Exception):  # pragma: no cover
     pass
 
 
-class FileNotFoundError(Exception):  # pragma: no cover
+class FileNotFoundError(Exception):  # pylint: disable=redefined-builtin
     """Raised when expected files/directories are not found"""
     def __init__(self, filename):
         super(FileNotFoundError, self).__init__(
@@ -246,6 +247,7 @@ class DriveFileObject(object):
 
         Currently not supported by Google Drive API.
         """
+        del data
         self._required_open()
         self._required_modes(["w", "a"])
 
@@ -853,7 +855,7 @@ class Drive(object):
         # In Python 3, convert any bytes object to str before sending the
         # request through the Google Drive API.
         if six.PY3:
-            for key in body.keys():
+            for key in body:
                 if isinstance(body[key], bytes):
                     body[key] = body[key].decode("utf-8")
 

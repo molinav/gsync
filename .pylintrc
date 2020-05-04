@@ -62,6 +62,7 @@ confidence=
 # --disable=W".
 disable=useless-object-inheritance,
         too-few-public-methods,
+        unnecessary-pass,
         broad-except
 
 # Enable the message, report, category or checker with the given id(s). You can

@@ -18,6 +18,7 @@ from libgsync import __version__
 try:
     unicode("")
 except NameError:
+    # pylint: disable=invalid-name,redefined-builtin
     unicode = str
 
 # Make stdout unbuffered.
