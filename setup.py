@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf8 -*-
 
 # Copyright (C) 2013 Craig Phillips.  All rights reserved.
 
@@ -42,6 +43,10 @@ setup(**{
         "Craig Phillips",
     "author_email":
         "iwonbigbro@gmail.com",
+    "maintainer":
+        "Víctor Molina García",
+    "maintainer_email":
+        "molinav@users.noreply.github.com",
     "keywords": [
         "gsync",
         "rsync",
