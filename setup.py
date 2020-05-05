@@ -2,9 +2,16 @@
 
 # Copyright (C) 2013 Craig Phillips.  All rights reserved.
 
+import io
+import os
 from datetime import datetime
 from setuptools import setup
 from libgsync import __version__
+
+# Get the requirements.
+HERE = os.path.abspath(os.path.dirname(__file__))
+with io.open(os.path.join(HERE, "requirements.txt"), encoding="utf-8") as fobj:
+    REQUIREMENTS = fobj.read().splitlines()
 
 delim = """
 =============================================================================
@@ -40,18 +47,7 @@ setup(
     setup_requires=[
         'setuptools',
     ],
-    install_requires=[
-        'six >= 1.10.0',
-        'docopt >= 0.6.0',
-        'google-api-python-client >= 1.2, < 1.5.0',
-        'httplib2 >= 0.8, < 0.16.0',
-        'oauth2client >= 1.1, < 4.0.0',
-        'python-dateutil >= 1.5',
-        'python-gflags >= 2.0',
-        'python-magic >= 0.4.6',
-        'retrying >= 1.1.0',
-        'urllib3 >= 1.5',
-    ],
+    install_requires=REQUIREMENTS,
     packages=[
         'libgsync',
         'libgsync.drive',
