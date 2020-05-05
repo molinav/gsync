@@ -19,14 +19,15 @@ setup(
     author='Craig Phillips',
     author_email='iwonbigbro@gmail.com',
     keywords=[
-        "rsync",
         "gsync",
+        "rsync",
         "google",
         "drive",
         "transfer",
         "copy",
+        "sync",
         "files",
-        "ftp"
+        "ftp",
     ],
     url='https://github.com/iwonbigbro/gsync',
     long_description=delim.join([
