@@ -9,15 +9,19 @@ from datetime import datetime
 from setuptools import setup
 from libgsync import __version__
 
-# Get the requirements.
+# Get the long description.
 HERE = os.path.abspath(os.path.dirname(__file__))
+with io.open(os.path.join(HERE, "README.md"), encoding="utf-8") as fobj:
+    README = fobj.read()
+with io.open(os.path.join(HERE, "CHANGELOG.md"), encoding="utf-8") as fobj:
+    CHANGELOG = fobj.read()
+TITLE = "Gsync {} - {}".format(__version__, str(datetime.utcnow()))
+DELIMITER = "\n{}\n\n".format(79 * "=")
+LONG_DESCRIPTION = DELIMITER.join([TITLE, README, CHANGELOG])
+
+# Get the requirements.
 with io.open(os.path.join(HERE, "requirements.txt"), encoding="utf-8") as fobj:
     REQUIREMENTS = fobj.read().splitlines()
-
-delim = """
-=============================================================================
-
-"""
 
 setup(**{
     "name":
@@ -29,12 +33,7 @@ setup(**{
     "description":
         "GSync - RSync for Google Drive",
     "long_description":
-        delim.join([
-            "Gsync %s - %s" % (__version__, str(datetime.utcnow())),
-            open("README.md").read(),
-            "Change history",
-            open("CHANGELOG.md").read()
-        ]),
+        LONG_DESCRIPTION,
     "long_description_content_type":
         "text/markdown",
     "url":
