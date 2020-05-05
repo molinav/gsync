@@ -18,14 +18,29 @@ delim = """
 
 """
 
-setup(
-    name='gsync',
-    description='GSync - RSync for Google Drive',
-    version=__version__,
-    license='BSD License',
-    author='Craig Phillips',
-    author_email='iwonbigbro@gmail.com',
-    keywords=[
+setup(**{
+    "name":
+        "gsync",
+    "version":
+        __version__,
+    "license":
+        "BSD License",
+    "description":
+        "GSync - RSync for Google Drive",
+    "long_description":
+        delim.join([
+            "Gsync %s - %s" % (__version__, str(datetime.utcnow())),
+            open("README.md").read(),
+            "Change history",
+            open("CHANGELOG.md").read()
+        ]),
+    "url":
+        "https://github.com/iwonbigbro/gsync",
+    "author":
+        "Craig Phillips",
+    "author_email":
+        "iwonbigbro@gmail.com",
+    "keywords": [
         "gsync",
         "rsync",
         "google",
@@ -36,26 +51,21 @@ setup(
         "files",
         "ftp",
     ],
-    url='https://github.com/iwonbigbro/gsync',
-    long_description=delim.join([
-        "Gsync %s - %s" % (__version__, str(datetime.utcnow())),
-        open("README.md").read(),
-        "Change history",
-        open("CHANGELOG.md").read()
-    ]),
-    test_suite="tests",
-    setup_requires=[
-        'setuptools',
+    "packages": [
+        "libgsync",
+        "libgsync.drive",
+        "libgsync.options",
+        "libgsync.sync",
+        "libgsync.sync.file",
     ],
-    install_requires=REQUIREMENTS,
-    packages=[
-        'libgsync',
-        'libgsync.drive',
-        'libgsync.options',
-        'libgsync.sync',
-        'libgsync.sync.file',
+    "scripts": [
+        "bin/gsync",
     ],
-    scripts=[
-        'bin/gsync',
+    "install_requires":
+        REQUIREMENTS,
+    "setup_requires": [
+        "setuptools",
     ],
-)
+    "test_suite":
+        "tests",
+})
