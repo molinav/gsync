@@ -18,7 +18,16 @@ setup(
     license='BSD License',
     author='Craig Phillips',
     author_email='iwonbigbro@gmail.com',
-    keywords='rsync gsync google-drive transfer copy files ftp',
+    keywords=[
+        "rsync",
+        "gsync",
+        "google",
+        "drive",
+        "transfer",
+        "copy",
+        "files",
+        "ftp"
+    ],
     url='https://github.com/iwonbigbro/gsync',
     long_description=delim.join([
         "Gsync %s - %s" % (__version__, str(datetime.utcnow())),
