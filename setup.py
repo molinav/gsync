@@ -5,7 +5,6 @@
 
 import io
 import os
-from datetime import datetime
 from setuptools import setup
 from libgsync import __version__
 
@@ -15,9 +14,8 @@ with io.open(os.path.join(HERE, "README.md"), encoding="utf-8") as fobj:
     README = fobj.read()
 with io.open(os.path.join(HERE, "CHANGELOG.md"), encoding="utf-8") as fobj:
     CHANGELOG = fobj.read()
-TITLE = "Gsync {} - {}".format(__version__, str(datetime.utcnow()))
 DELIMITER = "\n{}\n\n".format(79 * "=")
-LONG_DESCRIPTION = DELIMITER.join([TITLE, README, CHANGELOG])
+LONG_DESCRIPTION = DELIMITER.join([README, CHANGELOG])
 
 # Get the requirements.
 with io.open(os.path.join(HERE, "requirements.txt"), encoding="utf-8") as fobj:

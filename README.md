@@ -1,3 +1,21 @@
+# Gsync - RSync for Google Drive
+
+[![Build Status](
+    https://travis-ci.org/molinav/gsync.svg?branch=master)
+](
+    https://travis-ci.org/github/molinav/gsync/builds
+)
+[![Feature Requests](
+    https://img.shields.io/github/issues/molinav/gsync/feature-request.svg)
+](
+    https://github.com/molinav/gsync/issues?q=is%3Aopen+is%3Aissue+label%3Afeature-request
+)
+[![Bugs](
+    https://img.shields.io/github/issues/molinav/gsync/bug.svg)
+](
+    https://github.com/molinav/gsync/issues?utf8=✓&q=is%3Aissue+is%3Aopen+label%3Abug
+)
+
 Copyright (C) 2013-2014 Craig Phillips. All rights reserved.
 
 Google currently don't produce a Linux variant of their client for Google
