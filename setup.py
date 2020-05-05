@@ -34,6 +34,8 @@ setup(**{
             "Change history",
             open("CHANGELOG.md").read()
         ]),
+    "long_description_content_type":
+        "text/markdown",
     "url":
         "https://github.com/iwonbigbro/gsync",
     "author":
@@ -66,6 +68,15 @@ setup(**{
     "setup_requires": [
         "setuptools",
     ],
+    "python_requires":
+        ", ".join([
+            ">=2.7",
+            "!=3.0.*",
+            "!=3.1.*",
+            "!=3.2.*",
+            "!=3.3.*",
+            "<4",
+        ]),
     "test_suite":
         "tests",
 })
