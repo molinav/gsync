@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
 # -*- coding: utf8 -*-
-
-# Copyright (C) 2013 Craig Phillips.  All rights reserved.
+# Copyright (C) 2013 Craig Phillips. All rights reserved.
+"""GSync -- RSync for Google Drive."""
 
 import io
 import os
@@ -29,7 +29,7 @@ setup(**{
     "license":
         "BSD License",
     "description":
-        "GSync - RSync for Google Drive",
+        "GSync -- RSync for Google Drive",
     "long_description":
         LONG_DESCRIPTION,
     "long_description_content_type":
