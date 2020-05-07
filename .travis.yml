@@ -1,25 +1,23 @@
 language: python
 
 python:
-    - "2.7"
-    - "3.4"
-    - "3.5"
-    - "3.6"
-    - "3.7"
-    - "3.8"
-
-sudo: false
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8"
 
 branches:
-    only:
-        - master
+  only:
+    - master
 
 before_install:
-    - set -e
+  - set -e
 
 install:
-    - pip install -r requirements.txt
-    - python setup.py build && python setup.py install
+  - pip install -r requirements.txt
+  - python setup.py build && python setup.py install
 
 script:
-    - echo
+  - echo
