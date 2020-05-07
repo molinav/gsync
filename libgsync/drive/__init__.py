@@ -228,7 +228,7 @@ class DriveFileObject(object):
             }
 
             res, data = http.request(url, headers=headers)
-            retry = res.status in [301, 302, 303, 307, 308] \
+            retry = res.status in [110, 301, 302, 303, 307, 400, 308, 500] \
                 and 'location' in res
 
             if retry:  # pragma: no cover
