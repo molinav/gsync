@@ -17,6 +17,10 @@ with io.open(os.path.join(HERE, "CHANGELOG.md"), encoding="utf-8") as fobj:
 DELIMITER = "\n{}\n\n".format(79 * "=")
 LONG_DESCRIPTION = DELIMITER.join([README, CHANGELOG])
 
+# Get the license.
+with io.open(os.path.join(HERE, "LICENSE"), encoding="utf-8") as fobj:
+    LICENSE = fobj.read()
+
 # Get the requirements.
 with io.open(os.path.join(HERE, "requirements.txt"), encoding="utf-8") as fobj:
     REQUIREMENTS = fobj.read().splitlines()
@@ -27,7 +31,7 @@ setup(**{
     "version":
         __version__,
     "license":
-        "BSD License",
+        LICENSE,
     "description":
         "GSync -- RSync for Google Drive",
     "long_description":
