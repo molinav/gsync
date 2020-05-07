@@ -69,11 +69,8 @@ setup(**{
     "scripts": [
         "bin/gsync",
     ],
-    "install_requires":
-        REQUIREMENTS,
-    "setup_requires": [
-        "setuptools",
-    ],
+    "test_suite":
+        "tests",
     "python_requires":
         ", ".join([
             ">=2.7",
@@ -83,6 +80,9 @@ setup(**{
             "!=3.3.*",
             "<4",
         ]),
-    "test_suite":
-        "tests",
+    "setup_requires": [
+        "setuptools",
+    ],
+    "install_requires":
+        REQUIREMENTS,
 })
