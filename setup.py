@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
 # -*- coding: utf8 -*-
-
-# Copyright (C) 2013 Craig Phillips.  All rights reserved.
+# Copyright (C) 2013 Craig Phillips. All rights reserved.
+"""GSync -- RSync for Google Drive."""
 
 import io
 import os
@@ -17,6 +17,10 @@ with io.open(os.path.join(HERE, "CHANGELOG.md"), encoding="utf-8") as fobj:
 DELIMITER = "\n{}\n\n".format(79 * "=")
 LONG_DESCRIPTION = DELIMITER.join([README, CHANGELOG])
 
+# Get the license.
+with io.open(os.path.join(HERE, "LICENSE"), encoding="utf-8") as fobj:
+    LICENSE = fobj.read()
+
 # Get the requirements.
 with io.open(os.path.join(HERE, "requirements.txt"), encoding="utf-8") as fobj:
     REQUIREMENTS = fobj.read().splitlines()
@@ -27,9 +31,9 @@ setup(**{
     "version":
         __version__,
     "license":
-        "BSD License",
+        LICENSE,
     "description":
-        "GSync - RSync for Google Drive",
+        "GSync -- RSync for Google Drive",
     "long_description":
         LONG_DESCRIPTION,
     "long_description_content_type":
@@ -44,6 +48,26 @@ setup(**{
         "Víctor Molina García",
     "maintainer_email":
         "molinav@users.noreply.github.com",
+    "classifiers": [
+        "Development Status :: 4 - Beta",
+        "Environment :: Console",
+        "Intended Audience :: Developers",
+        "Intended Audience :: End Users/Desktop",
+        "License :: OSI Approved :: BSD License",
+        "Natural Language :: English",
+        "Operating System :: POSIX :: Linux",
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Topic :: Desktop Environment :: File Managers",
+        "Topic :: System :: Archiving :: Backup",
+        "Topic :: Utilities",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+    ],
     "keywords": [
         "gsync",
         "rsync",
@@ -62,14 +86,16 @@ setup(**{
         "libgsync.sync",
         "libgsync.sync.file",
     ],
+    "package_data": {
+        "libgsync.drive": [
+            "*.json",
+        ],
+    },
     "scripts": [
         "bin/gsync",
     ],
-    "install_requires":
-        REQUIREMENTS,
-    "setup_requires": [
-        "setuptools",
-    ],
+    "test_suite":
+        "tests",
     "python_requires":
         ", ".join([
             ">=2.7",
@@ -79,6 +105,9 @@ setup(**{
             "!=3.3.*",
             "<4",
         ]),
-    "test_suite":
-        "tests",
+    "setup_requires": [
+        "setuptools",
+    ],
+    "install_requires":
+        REQUIREMENTS,
 })

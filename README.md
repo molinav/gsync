@@ -1,4 +1,4 @@
-# GSync - RSync for Google Drive
+# GSync -- RSync for Google Drive
 
 [![Build Status](
     https://travis-ci.org/molinav/gsync.svg?branch=master)

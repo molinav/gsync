@@ -1,25 +1,26 @@
 language: python
 
 python:
-    - "2.7"
-    - "3.4"
-    - "3.5"
-    - "3.6"
-    - "3.7"
-    - "3.8"
-
-sudo: false
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8"
 
 branches:
-    only:
-        - master
+  only:
+    - master
 
 before_install:
-    - set -e
+  - set -e
+  - python -V
 
 install:
-    - pip install -r requirements.txt
-    - python setup.py build && python setup.py install
+  - pip install pip wheel --upgrade
+  - pip install -r requirements.txt
+  - pip install flake8
+  - python setup.py build && python setup.py install
 
 script:
-    - echo
+  - python -m flake8 libgsync --config=.flake8rc

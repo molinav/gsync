@@ -81,8 +81,10 @@ class SyncRules(object):
         if not self.skip_mimetype():
             return False
 
-        return bool((GsyncOptions.size_only or self.skip_mtime())
-                    and self.skip_size())
+        if not self.skip_size():
+            return False
+
+        return bool(GsyncOptions.size_only or self.skip_mtime())
 
     @debug.function
     def skip_mtime(self):
