@@ -86,6 +86,11 @@ setup(**{
         "libgsync.sync",
         "libgsync.sync.file",
     ],
+    "package_data": {
+        "libgsync.drive": [
+            "*.json",
+        ],
+    },
     "scripts": [
         "bin/gsync",
     ],
