@@ -14,8 +14,10 @@ branches:
 
 before_install:
   - set -e
+  - python -V
 
 install:
+  - pip install pip wheel --upgrade
   - pip install -r requirements.txt
   - pip install flake8
   - python setup.py build && python setup.py install
