@@ -6,6 +6,14 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Added
+- Preliminary support for Python 3
+- Travis CI with basic linting and installation checks
+
+### Changed
+- Move library requirements into a separate file
+- Update library setup metadata
+
 ## [0.2.1] - 2020-05-04
 
 ### Changed
