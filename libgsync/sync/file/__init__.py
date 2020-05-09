@@ -226,7 +226,8 @@ class SyncFileInfo(object):
         if isinstance(value, (tuple, list)):
             value = os_platform.stat_result(tuple(value))
             self._dict['statInfo'] = value
-            description = b64encode(compress(pickle.dumps(value, protocol=2)))
+            stream = pickle.dumps(value, protocol=2)
+            description = b64encode(compress(stream))
             if six.PY3:
                 description = description.decode("utf-8")
             self._dict['description'] = description
@@ -235,7 +236,8 @@ class SyncFileInfo(object):
 
         if isinstance(value, os_platform.stat_result):
             try:
-                description = b64encode(compress(pickle.dumps(value, protocol=2)))
+                stream = pickle.dumps(value, protocol=2)
+                description = b64encode(compress(stream))
                 if six.PY3:
                     description = description.decode("utf-8")
                 self._dict['description'] = description
