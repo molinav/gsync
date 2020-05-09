@@ -6,6 +6,16 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+## [0.2.2] - 2020-05-09
+
+### Added
+- Preliminary support for Python 3
+- Travis CI with basic linting and installation checks
+
+### Changed
+- Move library requirements into a separate file
+- Update library setup metadata
+
 ## [0.2.1] - 2020-05-04
 
 ### Changed
@@ -150,6 +160,8 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Bug: Files get updated that are in Trash and do not get restored
 
 
+[0.2.2]:
+https://github.com/molinav/gsync/compare/v0.2.1...v0.2.2
 [0.2.1]:
 https://github.com/molinav/gsync/compare/v0.2.0...v0.2.1
 [0.2.0]:
